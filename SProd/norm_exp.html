@@ -1,0 +1,633 @@
+<!----------------------------------------------------------------
+- HIT template for norming study
+- Written by Jennifer Hu (January 2019)
+- Based on template by Malinda McPherson
+----------------------------------------------------------------->
+
+<!-- The line below is used for debugging only. -->
+<!-- <form action="mailto:jennhu@mit.edu" method="post" enctype="text/plain"> -->
+
+<script type="text/javascript">
+  // disable Enter button in text form to prevent faulty submission
+  window.addEventListener('keydown',function(e) {
+    if (e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13) {
+      if (e.target.nodeName=='INPUT'&&e.target.type!=='textarea') {
+        e.preventDefault();
+        return false;
+      }
+    }
+  }, true);
+</script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore.js"
+    type="text/javascript">
+</script>
+<script
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
+</script>
+
+<script>
+
+var TEST_MODE = true;
+var HIT_NUMBER = 4; // int between 1-4 (inclusive)
+
+/*****************************************************************
+* HELPER FUNCTIONS
+*****************************************************************/
+
+// checks if text is empty, including if it only consists of spaces
+function isEmpty(text) {
+    return !text.replace(/\s+/, '').length;
+}
+
+// returns array of numbers 1:N
+function range1(N) {
+    return N?range1(N-1).concat(N):[]
+};
+
+function shuffle(o) {
+    for (var j, x, i = o.length; i;
+        j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};
+
+// shuffles the array
+Array.prototype.shuffle = function () {
+  for (var i = this.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = this[i];
+    this[i] = this[j];
+    this[j] = tmp;
+  }
+  return this;
+}
+
+// randomize order of trials i through j (credit Alper)
+function randomize(i, j) {
+	ar = [];
+	ar2 = [];
+	for (var k = i; k <= j; k++) {
+		ar.push(k);
+		ar2.push(k);
+	}
+	ar2.shuffle();
+	for (var k = 0; k < ar.length; k++) {
+		if(moved.indexOf(ar[k]) != -1) {
+			alert("Error: same index randomized twice.");
+		}
+    else {
+			moved.push(ar[k]);
+			movedto.push(ar2[k]);
+		}
+	}
+}
+
+/*****************************************************************
+* PARAMETERS FOR EXPERIMENT
+*****************************************************************/
+
+// dictionary keyed by HIT number
+var img_path_dict = {
+  1 : ['19212715.jpg', '3676460610.jpg', '4104826512.jpg', '4715971264.jpg', '4983587808.jpg',
+      '5584269779.jpg', '6681702227.jpg', '7686241792.jpg', '19610188.jpg', '3707738261.jpg',
+      '4318034861.jpg', '4723023590.jpg', '4987220012.jpg', '5587744215.jpg', '6721214117.jpg',
+      '7717834540.jpg', '23770160.jpg', '3707990914.jpg', '4390269250.jpg', '4750619121.jpg',
+      '5194023863.jpg', '5669914204.jpg', '6848900321.jpg', '7742281954.jpg', '2511794705.jpg',
+      '3710674892.jpg', '4404273714.jpg', '4751332425.jpg', '5194027799.jpg', '5821457818.jpg',
+      '6869199530.jpg', '7772052674.jpg', '3126981064.jpg', '3787061402.jpg', '4434125934.jpg',
+      '4761374939.jpg', '5291613581.jpg', '5822092748.jpg', '6893218038.jpg', '7819772858.jpg',
+      '3195403123.jpg', '3787437809.jpg', '4464176007.jpg', '4789495327.jpg', '5316250295.jpg',
+      '5925544950.jpg', '6928014516.jpg', '7828338600.jpg', '325742196.jpg', '381760243.jpg',
+      '4504478051.jpg', '4842516865.jpg', '5326961690.jpg', '6053720349.jpg', '6986780079.jpg',
+      '7988586396.jpg', '3486538055.jpg', '3819214047.jpg', '4576671.jpg', '4858197102.jpg',
+      '5366770416.jpg', '6220789654.jpg', '6990987537.jpg', '807129.jpg', '35268263.jpg',
+      '3821555355.jpg', '4585839343.jpg', '4871515296.jpg', '5367322642.jpg', '6237339784.jpg',
+      '71007788.jpg', '8088028369.jpg', '3549408779.jpg', '4001914227.jpg', '4597303045.jpg',
+      '4893505289.jpg', '5403974988.jpg', '6260674203.jpg', '7114922111.jpg', '3577868513.jpg',
+      '4025432630.jpg', '4611771929.jpg', '4895017117.jpg', '5505219003.jpg', '6314474316.jpg',
+      '7157359077.jpg', '3650485497.jpg', '4041300706.jpg', '4618092593.jpg', '4939361156.jpg',
+      '5572347874.jpg', '6381955081.jpg', '7348289414.jpg', '3652094744.jpg', '4043883681.jpg',
+      '4661134609.jpg', '4952277054.jpg', '5573511334.jpg', '6677599803.jpg', '7558058046.jpg'],
+  2 : ['2817230861.jpg', '122202217.jpg', '7579008108.jpg', '4549977232.jpg', '4607606901.jpg',
+      '8218549120.jpg', '6845394024.jpg', '1119034454.jpg', '4786057236.jpg', '6337111139.jpg',
+      '5543900069.jpg', '4511110810.jpg', '4618355872.jpg', '6354735653.jpg', '7525845590.jpg',
+      '5403632578.jpg', '3844515314.jpg', '5932908042.jpg', '4766583860.jpg', '4896173039.jpg',
+      '3825927201.jpg', '3880471209.jpg', '7916403012.jpg', '7156339776.jpg', '4464227525.jpg',
+      '78050495.jpg', '4705826062.jpg', '4121133646.jpg', '5920741851.jpg', '5686868227.jpg',
+      '4785668533.jpg', '5985691500.jpg', '2763354860.jpg', '13615892.jpg', '3665441862.jpg',
+      '6915921596.jpg', '4385122946.jpg', '4726019778.jpg', '2987142183.jpg', '3767841911.jpg',
+      '6561536991.jpg', '4445547327.jpg', '4848627833.jpg', '3854366835.jpg', '5403974296.jpg',
+      '3724738804.jpg', '6110845331.jpg', '8849890.jpg', '121590361.jpg', '8189395281.jpg',
+      '7777767632.jpg', '4099476662.jpg', '3705781399.jpg', '1920465.jpg', '4761917952.jpg',
+      '3893510114.jpg', '3808935147.jpg', '5821273816.jpg', '29850055.jpg', '439638376.jpg',
+      '7579633346.jpg', '7817889978.jpg', '4862594943.jpg', '505955292.jpg', '7811652612.jpg',
+      '161347959.jpg', '5277303677.jpg', '4579431117.jpg', '3220140234.jpg', '6989990004.jpg',
+      '4818385876.jpg', '3672940355.jpg', '6064872574.jpg', '4855357158.jpg', '6774607635.jpg',
+      '6302275137.jpg', '7059204515.jpg', '5519359130.jpg', '6778846856.jpg', '4825534547.jpg',
+      '4504411798.jpg', '5712096379.jpg', '8003613232.jpg', '5283494184.jpg', '6978881720.jpg',
+      '4357228527.jpg', '6288191752.jpg', '4855517694.jpg', '6558305361.jpg', '1155138244.jpg',
+      '4988974320.jpg', '6716053167.jpg', '5241718422.jpg', '7643799764.jpg', '2954929479.jpg',
+      '8057415401.jpg', '5196768578.jpg', '33256003.jpg', '6915574150.jpg', '4912808658.jpg'],
+  3 : ['6225280494.jpg', '6953338290.jpg', '6958079140.jpg', '4387675829.jpg', '6596861005.jpg',
+      '4968358093.jpg', '3787451302.jpg', '6300225700.jpg', '55903788.jpg', '495947436.jpg',
+      '6268271168.jpg', '6036142462.jpg', '4400746838.jpg', '4179301928.jpg', '4563143284.jpg',
+      '6939434967.jpg', '4621100791.jpg', '5769959745.jpg', '4704668708.jpg', '3665128265.jpg',
+      '3442006834.jpg', '3719712280.jpg', '141126420.jpg', '4479855590.jpg', '4968012871.jpg',
+      '5820828817.jpg', '2936881937.jpg', '6447364125.jpg', '4610962283.jpg', '7263168156.jpg',
+      '4551961343.jpg', '5430267989.jpg', '4696829163.jpg', '5293561716.jpg', '3112501337.jpg',
+      '2889481764.jpg', '3327035014.jpg', '7150152099.jpg', '9726060.jpg', '3350260112.jpg',
+      '8088804992.jpg', '6775388196.jpg', '2969380952.jpg', '6882674785.jpg', '11551286.jpg',
+      '26805148.jpg', '7990171495.jpg', '7682350138.jpg', '8247042603.jpg', '3673032164.jpg',
+      '6738026527.jpg', '7117115809.jpg', '4055310167.jpg', '6005955072.jpg', '5840187633.jpg',
+      '44885232.jpg', '104669470.jpg', '3899294432.jpg', '3743169025.jpg', '5916878545.jpg',
+      '3677329561.jpg', '150582765.jpg', '5696948391.jpg', '4576510103.jpg', '4678843953.jpg',
+      '6156276992.jpg', '4807464371.jpg', '7380263314.jpg', '6303184938.jpg', '6338733.jpg',
+      '65523111.jpg', '5507574163.jpg', '5330052101.jpg', '44419435.jpg', '7995263133.jpg',
+      '4414061.jpg', '4772785237.jpg', '4658910970.jpg', '3744832122.jpg', '3639547922.jpg',
+      '3800306463.jpg', '6556869275.jpg', '96022995.jpg', '5924713518.jpg', '3046259614.jpg',
+      '156205911.jpg', '42276187.jpg', '4688978128.jpg', '5868688859.jpg', '7093695473.jpg',
+      '4181549116.jpg', '3639967449.jpg', '6715658033.jpg', '7051459033.jpg', '7507256476.jpg',
+      '3395865192.jpg', '4572715888.jpg', '23008408.jpg', '6842802184.jpg', '4717966711.jpg'],
+  4 : ['5334523454.jpg', '7806900624.jpg', '4324717979.jpg', '7119846943.jpg', '6280386353.jpg',
+      '2667549961.jpg', '5621916498.jpg', '4071750215.jpg', '28144507.jpg', '5326507136.jpg',
+      '6160193920.jpg', '7575074972.jpg', '6237869128.jpg', '41911141.jpg', '79433987.jpg',
+      '5421108099.jpg', '4636978915.jpg', '4548039526.jpg', '7188003.jpg', '335110163.jpg',
+      '4755628405.jpg', '8859482.jpg', '4679233085.jpg', '45427454.jpg', '3660826540.jpg',
+      '11034843.jpg', '3938776000.jpg', '6094931376.jpg', '6552971469.jpg', '5333578.jpg',
+      '4584305340.jpg', '6681703035.jpg', '4580613274.jpg', '6918285809.jpg', '7243489604.jpg',
+      '5780791171.jpg', '5220880759.jpg', '3686889377.jpg', '3708748633.jpg', '4436749692.jpg',
+      '4322110026.jpg', '7773991560.jpg', '3818278154.jpg', '4455946038.jpg', '6981038311.jpg',
+      '4201813513.jpg', '4749855.jpg', '12142386.jpg', '3241892328.jpg', '4773695566.jpg',
+      '2047030603.jpg', '4544245701.jpg', '6845116814.jpg', '41999070.jpg', '4753970630.jpg',
+      '2760560588.jpg', '281706216.jpg', '6798727809.jpg', '6956922556.jpg', '5356318668.jpg',
+      '36979.jpg', '72940708.jpg', '3680138.jpg', '3741462565.jpg', '4376136908.jpg',
+      '5217022503.jpg', '5507087401.jpg', '4107478984.jpg', '4688958106.jpg', '4986581949.jpg',
+      '5411504795.jpg', '908636680.jpg', '4968396354.jpg', '4633221176.jpg', '5534793306.jpg',
+      '126594141.jpg', '4050265867.jpg', '6845273916.jpg', '5770115416.jpg', '4555514125.jpg',
+      '1679732375.jpg', '6000340511.jpg', '4571627369.jpg', '7028846053.jpg', '3923616497.jpg',
+      '33064498.jpg', '5090110064.jpg', '4263999253.jpg', '5930769790.jpg', '5565536413.jpg',
+      '4741991547.jpg', '6589292543.jpg', '41105465.jpg', '3260088697.jpg', '5506407501.jpg',
+      '4546207144.jpg', '4772601985.jpg', '1414454789.jpg', '6800805602.jpg', '8155650726.jpg'],
+}
+
+// keep track of stimuli and trials
+var ind = -1;
+var exp_trial_ind = 0;
+var stim_path = 'http://jennhu.scripts.mit.edu/hit' + HIT_NUMBER.toString() + '/'
+var img_paths = img_path_dict[HIT_NUMBER]
+var num_trials = img_paths.length
+var img_css = "display:block;margin-left:auto;margin-right:auto;margin-top:2em;"
+
+// conditions
+var conds = range1(num_trials).map(n => n.toString())
+var conds_order = shuffle(conds);
+
+// keep track of experiments
+var expt = 1;
+var expt_nums = ['1'] // can add more experiments
+var end_number = ['17']
+var expt_order = shuffle(expt_nums).concat(end_number) // don't need for one exp
+var next_expt = 0;
+
+// payment information
+// var total_bonus = 0;
+// var bonus_per_trial = 0.02;
+
+/*****************************************************************
+* EXPERIMENT FUNCTIONS
+*****************************************************************/
+
+// disable button as long as the text is empty
+function disableIfEmpty(text, button) {
+  isEmpty(text) ? clickDisable(button) : clickEnable(button);
+}
+
+// swaps out a completed trial for a new one
+function replaceTrial1(Tstim, div) {
+  // after last trial, go to the next experiment or page 17 ('task done' page)
+	if (exp_trial_ind == conds.length) {
+    // hide stimulus again
+    hideStim(Tstim);
+    next_expt++
+    // 'swap' (defined below) changes out one page for another
+    swap('trial_1', expt_order[next_expt])
+    exp_trial_ind = 0;
+  }
+  else {
+    // disable button again
+    document.getElementById("ContinueButton").disabled = true;
+    // set the new stim parameters
+    expt = 1;
+    var condnum = conds_order[exp_trial_ind];
+    // set the new stim source based on the new parameters
+    document.getElementById(Tstim).src = stim_path + img_paths[condnum-1]
+    showStim(Tstim);
+    if (TEST_MODE) {
+      console.log(document.getElementById(Tstim).src)
+    }
+    exp_trial_ind++;
+    var where = document.getElementById(div);
+    // make 'hidden' fields to record the stim info
+    var y = document.createElement("input");
+    y.setAttribute("type", "hidden");
+    y.setAttribute("id", "trial"+exp_trial_ind+"_stim");
+    y.setAttribute("name", "trial"+exp_trial_ind+"_stim");
+    y.setAttribute("value", img_paths[condnum-1]);
+    where.appendChild(y);
+  }
+};
+
+function Trial_ReturnText(TResp, div){
+  var Trial_Resp = document.getElementsByName(TResp);
+  var TextResp = Trial_Resp[0].value;
+  var where = document.getElementById(div);
+  var z = document.createElement("input");
+  z.setAttribute("type", "hidden");
+  z.setAttribute("id", "trial"+exp_trial_ind+"_resp");
+  z.setAttribute("name", "trial"+exp_trial_ind+"_resp");
+  z.setAttribute("value", TextResp);
+  where.appendChild(z);
+  Trial_Resp[0].value = ''
+};
+
+function hideStim(Tstim) {
+  document.getElementById(Tstim).setAttribute("style", "display:none;")
+}
+
+function showStim(Tstim) {
+  document.getElementById(Tstim).setAttribute("style", img_css)
+}
+
+function clickDisable(button) {
+  document.getElementById(button).disabled = true;
+}
+
+function clickEnable(button) {
+  document.getElementById(button).disabled = false;
+}
+
+function clearFeedback(button){
+  document.getElementById(button).innerHTML = "";
+}
+
+var ans = [];
+
+function answer(index) {
+	if(ans.indexOf(index) == -1) {
+		ans.push(index);
+	}
+}
+
+function allAnswered(num) {
+	var done = true;
+	for(var i = 1; i <= num; i++) {
+		done = done && (ans.indexOf(i) != -1);
+	}
+	return done
+}
+
+var pans = [];
+
+function answerPage(pagenum) {
+	if(pans.indexOf(pagenum) == -1) {
+		pans.push(pagenum);
+	}
+}
+
+function pageAnswered(pagenum) {
+	return pans.indexOf(pagenum) != -1;
+}
+</script>
+
+<script>
+var current = 1; //current page
+var moved = []; //pages moved by the rand
+var movedto = [];
+
+//takes randomization into account
+function effectivePage(pagenum) {
+	var index = moved.indexOf(pagenum);
+	if(index == -1) {
+		return pagenum;
+	}else{
+		return movedto[index];
+	}
+}
+
+var numberText = []; //stores divs to be updated on page change
+var pntexts = []; //texts in them
+function makePageNumber(text) { //text: e.g., "Page 1 / 4"
+	var temp = text.split(1);
+	var texts = [temp[0], temp[1]];
+	//needed if there are more 1's (e.g. if total # of pages contains the digit 1)
+	if(temp.length > 2) {
+		for (var i = 2; i < temp.length; i++) {
+			texts[1] += 1 + temp[i];
+		}
+	}
+	document.writeln("<p><div id='pagenumberdiv" + numberText.length + "'></div></p>");
+	loadPageNumber(("pagenumberdiv" + numberText.length), texts);
+}
+function loadPageNumber(id, texts) {
+	var newone = document.getElementById(id);
+	numberText.push(newone);
+	pntexts.push(texts);
+	updatePageNumbers();
+}
+function updatePageNumbers() {
+	for(var i = 0; i < numberText.length; i++) {
+		numberText[i].innerHTML = pntexts[i][0] + current + pntexts[i][1];
+	}
+}
+
+// make one vanish and the other appear
+function swap(vanish, appear) {
+	document.getElementById(vanish).style.display = "none";
+	//document.getElementById(appear).style.display = "inline";
+	document.getElementById(appear).style.display = "";
+	updatePageNumbers();
+}
+
+//go to the next page
+function next() {
+	current++;
+	swap(effectivePage(current - 1), effectivePage(current));
+}
+
+function endHIT() {
+	current++;
+	swap(effectivePage(current - 1), 18);
+}
+
+function back() {
+	current--;
+	swap(effectivePage(current + 1), effectivePage(current));
+}
+
+function updateProgressBar() {
+  var bar = document.getElementById("myBar");
+  bar.setAttribute("style", "width: " + (exp_trial_ind+1).toString() + "%;")
+  bar.innerHTML = exp_trial_ind.toString() + '%'
+}
+
+</script>
+
+<!----------------------------------------------------------------
+- STYLE/CSS
+----------------------------------------------------------------->
+
+<style type="text/css">
+.wrapper {
+  width: 100%;
+  display: table;
+}
+.page {
+  display: table-cell;
+  vertical-align: text-top;
+}
+.cell {
+  margin: 0 auto;
+  padding: 10px;
+  width: 850px;
+}
+.pagenum {
+  text-align: center;
+  font-style: italic;
+}
+.disclaimer {
+  font-weight: bold;
+  color: #555555;
+}
+.warning {
+  font-weight: bold;
+}
+input { font-size: 18px; }
+textarea { font-size: 18px; }
+img { max-width: 500px; max-height: 500px; }
+body {
+  /* font-family: "Helvetica", sans-serif; */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+}
+#myProgress {
+  width: 50%;
+  border: 3px solid grey;
+  margin: auto;
+  text-align: center;
+}
+
+#myBar {
+  width: 1%;
+  height: 20px;
+  background-color: #b1c8ed;
+  text-align: center;
+  vertical-align: middle;
+}
+</style>
+
+<!----------------------------------------------------------------
+- LANDING PAGE
+----------------------------------------------------------------->
+
+<div class="wrapper">
+<div class="page" id="1">
+<div class="cell">
+<div align="center">
+  <h1>What's happening in the photo?</h1>
+</div>
+
+<!--The below statement MUST appear as the first page on any MIT turk study-->
+<div>
+  By answering the following questions, you are participating in a study being
+  performed by cognitive scientists in the MIT Department of Brain and
+  Cognitive Sciences. If you have questions about this research, please contact
+  Edward Gibson at <a href='mailto:egibson@mit.edu'>egibson@mit.edu</a>. Your
+  participation in this research is voluntary. You may decline to answer any or
+  all of the following questions. You may decline further participation, at any
+  time, without adverse consequences. Your anonymity is assured; the researchers
+  who have requested your participation will not receive any personal information
+  about you.
+</div>
+
+<div>&nbsp;</div>
+
+<br>
+<div style="text-align: center;">
+  <input onclick="next();" type="button" value="Continue"/>
+</div>
+</div>
+</div>
+</div>
+
+<!--Page 2 gets demographic info-->
+<div class="wrapper">
+<div class="page" id="2" style="display: none;">
+<div class="cell">
+<div align="center">&nbsp;</div>
+
+<div class="warning">
+  Please answer the background questions below. Payment is NOT
+  dependent on your answers to the following background questions on country and language.
+</div>
+
+<p>What country are you from?</p>
+
+<table border="0" cellpadding="0" cellspacing="4">
+	<tbody>
+		<tr>
+			<td valign="middle"><input name="Q1Country" type="radio" value="USA"/></td>
+			<td><span class="answertext">United States</span></td>
+		</tr>
+		<tr>
+			<td valign="middle"><input name="Q1Country" type="radio" value="CAN"/></td>
+			<td><span class="answertext">Canada</span></td>
+		</tr>
+    <tr>
+      <td valign="middle"><input name="Q1Country" type="radio" value="UK"/></td>
+      <td><span class="answertext">United Kingdom</span></td>
+    </tr>
+    <tr>
+      <td valign="middle"><input name="Q1Country" type="radio" value="AUS"/></td>
+      <td><span class="answertext">Australia/New Zealand</span></td>
+    </tr>
+    <tr>
+      <td valign="middle"><input name="Q1Country" type="radio" value="IND"/></td>
+      <td><span class="answertext">India</span></td>
+    </tr>
+		<tr>
+			<td valign="middle"><input name="Q1Country" type="radio" value="Other"/></td>
+			<td><span class="answertext">Other</span></td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Is English your first language?</p>
+
+<table border="0" cellpadding="0" cellspacing="4">
+	<tbody>
+		<tr>
+			<td valign="middle"><input name="Q2Language" type="radio" value="Yes"/></td>
+			<td><span class="answertext">Yes</span></td>
+		</tr>
+		<tr>
+			<td valign="middle"><input name="Q2Language" type="radio" value="No"/></td>
+			<td><span class="answertext">No</span></td>
+		</tr>
+	</tbody>
+</table>
+
+<div>&nbsp;</div>
+
+<div class="warning" style="text-align: center;">
+  Press &#39;Continue&#39; to proceed to the Instructions page.
+</div>
+<br>
+<div style="text-align: center;">
+  <input onclick="next();" type="button" value="Continue"/>
+</div>
+</div>
+</div>
+</div>
+
+<!-- DUMMY PATH TO TRIAL 1 STIMULUS - DO NOT MOVE/CHANGE THIS -->
+<div>
+<img id='T1_clip' src="http://tedlab.mit.edu/users/ali26m/Girl_Pull_Boy.png"
+     alt='stimulus' style="display:none;">
+</div>
+
+<!--Page 3 introduces the paradigm-->
+<div class="wrapper">
+<div class="page" id="3" style="display: none;">
+<div class="cell">
+<div align="center"><h1>Instructions</h1></div>
+
+<div>
+  In this experiment, you will see a set of 100 photographs.
+  Please write a one-sentence description of what is happening in each photo.
+  Note that the first photo may take a few seconds to load.
+</div>
+<br>
+<div>
+  <font color="red">Please do not press
+  &#39;enter&#39; at any point in the experiment.</font>
+</div>
+<br>
+<div class="warning" style="text-align: center;">
+  Press &#39;Continue&#39; to begin the experiment.
+</div>
+<br>
+<div style="text-align: center">
+  <input onclick="swap('3', 'trial_1'); replaceTrial1('T1_clip', '3');"
+         type="button" value="Continue"/>
+</div>
+</div>
+</div>
+
+<!----------------------------------------------------------------
+- EXPERIMENT
+----------------------------------------------------------------->
+
+<!-- THIS PAGE IS THE TESTING PAGE. Instead of changing pages from here on,
+we just use the same page and swap out the stim and
+reset the buttons after every trial.-->
+<div class="wrapper">
+<div class="page" id="trial_1" style="display: none;">
+<div class="cell">
+
+<!-- The image will be shown HERE -->
+
+<p style="text-align:center;">
+  Please write a one-sentence description of what is happening in the photo.
+  <br>
+  <br>
+  <input name="Responses" size="80" type="text"
+         onkeyup="disableIfEmpty(this.value, 'ContinueButton')"/>
+</p>
+
+<div style="text-align: center">
+  <input id="ContinueButton"
+         onclick="Trial_ReturnText('Responses', 'trial_1');
+                  replaceTrial1('T1_clip', 'trial_1');
+                  updateProgressBar();"
+         type="button" value="Submit and continue" disabled="true"/>
+</div>
+<br>
+<div style='text-align:center;'>
+  <font color="red">Do NOT press &#39;enter&#39;.</font>
+</div>
+<br>
+<div style="text-align: center;" id="myProgress">
+  <div style="text-align: center; vertical-align:center;" id="myBar">1%</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+  // disable Enter button in text form to prevent faulty submission
+  window.addEventListener('keydown',function(e) {
+    if (e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13) {
+      if (e.target.nodeName=='INPUT'&&e.target.type!=='textarea') {
+        e.preventDefault();
+        return false;
+      }
+    }
+  }, true);
+</script>
+
+<!--This is the penultimate page. You only see this if you did all the trials-->
+<div class="page" id="17" style="display: none;">
+<div class="cell">
+<div class="warning">
+  Congratulations, you&#39;ve completed the full HIT! Thank you for your help.
+</div>
+<br>
+<div>If you have any comments or feedback, please leave them here.</div>
+<p><textarea name="feedback" cols="80" rows="3"></textarea></p>
+<br>
+<div style="text-align: center">
+  <input type="submit" value="Submit"/>
+</div>
+</div>
+</div>
