@@ -9,4 +9,4 @@ The scripts [`lmers.R`](lmers.R) and [`lmers_convergence_tracking.R`](lmers_conv
 
 ## Generating tables
 
-The script [`format_table.py`](format_table.py) reads the `results/*.csv` files and outputs LaTeX tables with cell highlighting based on statistical significance levels. Each table is saved in its own `.tex` file in the [`tables`](tables) folder, with [`tables/main.tex`](tables/main.tex) as the controller file to be compiled.
+The script [`format_table.py`](format_table.py) reads the `results/*.csv` files and outputs LaTeX tables with cell highlighting based on statistical significance levels. Each table is saved in its own `.tex` file in the [`tables`](tables) folder, with [`tables/main.tex`](tables/main.tex) as the controller file to be compiled. The output will look like [`tables/tables.pdf`](tables/tables.pdf).
