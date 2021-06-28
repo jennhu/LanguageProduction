@@ -6,4 +6,4 @@ The script [`create_dataset/create_dataset.R`](create_dataset/create_dataset.R) 
 
 This directory also contains typing output for Experiment 2 ([`all_prodloc_typing_output_20200804.csv`](all_prodloc_typing_output_20200804.csv)) and annotated sentence production typing output ([`all_SPROD_annotated_data_20201210.csv`](all_SPROD_annotated_data_20201210.csv)).
 
-Demographic information (age, gender, handedness) for all subjects is provided in ['demographics.csv'](demographics.csv).
+Demographic information (age, gender, handedness) for all subjects is provided in [`demographics.csv`](demographics.csv).
