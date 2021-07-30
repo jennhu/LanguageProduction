@@ -300,6 +300,13 @@ for (expt in c("expt1", "expt2a", "expt2b", "expt3")) {
   result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name, network="MD")
   Q3_network_results <- add_row(Q3_network_results, result$network)
   Q3_sepfROI_results <- bind_rows(Q3_sepfROI_results, result$separate_fROIs)
+  # Also compare SProd and NProd for Exp. 1 & 2 only.
+  if (expt != "expt3") {
+    cond1_name = "SProd"; cond2_name = "NProd"
+    result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name, network="MD")
+    Q3_network_results <- add_row(Q3_network_results, result$network)
+    Q3_sepfROI_results <- bind_rows(Q3_sepfROI_results, result$separate_fROIs)
+  }
 }
 
 ################################################################################

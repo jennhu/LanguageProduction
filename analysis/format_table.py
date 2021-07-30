@@ -27,7 +27,7 @@ captions = {
     "Q1": "Q1: Does sentence production elicit a response in the language network?",
     "Q2": "Q2: Does the language network’s response to sentence production generalize across output modality?",
     "Q3": "Q3: Does the language network respond to both lexical access and syntactic encoding?",
-    "Q3-control": "Q3 [CONTROL]: Is language production more demanding than word production?"
+    "Q3-control": "Q3 [CONTROL]: Is language production more demanding than (non)word production?"
 }
 labels = {x: "tab:" + x for x in captions.keys()}
 col_widths = {
@@ -100,17 +100,17 @@ PREDICTIONS = {
     },
     "Q3-control": {
         "Experiment 1": {
-            "sig": ["SProd-WProd"],
+            "sig": ["SProd-WProd", "SProd-NProd"],
             "direction": negative,
             "nonsig": []
         },
         "Experiment 2a": {
-            "sig": ["SProd-WProd"],
+            "sig": ["SProd-WProd", "SProd-NProd"],
             "direction": negative,
             "nonsig": []
         },
         "Experiment 2b": {
-            "sig": ["SProd-WProd"],
+            "sig": ["SProd-WProd", "SProd-NProd"],
             "direction": negative,
             "nonsig": []
         },
