@@ -320,3 +320,52 @@ write_csv(Q3_network_results, "results/Q3_network.csv")
 write_csv(Q1_sepfROI_results, "results/Q1_sepfROIs.csv")
 write_csv(Q2_sepfROI_results, "results/Q2_sepfROIs.csv")
 write_csv(Q3_sepfROI_results, "results/Q3_sepfROIs.csv")
+
+################################################################################
+# CORRELATION BETWEEN TYPING OUTPUT AND LANG NETWORK RESPONSES
+################################################################################
+
+# First, check whether SProd>WProd effects are stable within individuals.
+SProd <- filter(dfs[["expt2b_prod"]], Effect=="SProd_typed")
+WProd <- filter(dfs[["expt2b_prod"]], Effect=="WProd_typed")
+SProd$WProd_EffectSize <- WProd$EffectSize[match(SProd$Subject, WProd$Subject)]
+SProd$SProd_minus_WProd_EffectSize <- SProd$EffectSize - SProd$WProd_EffectSize
+# TODO: find trial-level data
+
+# Next, check reliability within subjects of typing measure.
+typ <- read.csv("../data/all_SPROD_annotated_data_20201210.csv")
+typ <- filter(typ, Response!="Unintelligible", Response!="0") 
+typ[typ=="NA" | typ=="?" | typ=="Unknown" | typ=="Incomplete"] <- 0
+typ[is.na(typ)] <- 0
+typ$Number_well_formed_elements <- 
+  as.numeric(typ$Subject_is_Well_Formed) + 
+  as.numeric(typ$Verb_is_Well_Formed) + 
+  as.numeric(typ$Post.Verb_is_Well_Formed)
+# Correlate odd vs. even trials.
+for (subj in unique(typ$SubjID)) {
+  o <- filter(typ, SubjID == subj, TrialNumber %% 2 == 1)$Number_well_formed_elements
+  e <- filter(typ, SubjID == subj, TrialNumber %% 2 == 0)$Number_well_formed_elements
+  if (length(e) > length(o)) {e <- e[1:(length(e)-1)]}
+  else if (length(o) > length(e)) {o <- o[1:(length(o)-1)]}
+  test <- cor.test(o, e)
+  print(sprintf("%s: p=%f, rho=%f", subj, test$p.value, test$estimate))
+}
+
+# Get by-subject means for typing measure.
+typ_means <- typ %>%
+  group_by(SubjID) %>%
+  summarise(num_well_formed=mean(Number_well_formed_elements))
+
+# Finally, check relationship between typing measure and SProd>WProd effect size.
+# NOTE: Subject and SubjID are coded slightly differently, so shop off the prefix and suffix.
+SProd$SubjID <- substring(SProd$Subject, 5, 21)
+SProd$mean_num_well_formed <- typ_means$num_well_formed[match(SProd$SubjID, typ_means$SubjID)]
+
+# Correlation?
+test <- cor.test(SProd$mean_num_well_formed, SProd$SProd_minus_WProd_EffectSize)
+print(sprintf("p=%f, rho=%f", test$p.value, test$estimate))
+# Plot line of best fit.
+ggplot(data=SProd, aes(x=mean_num_well_formed, y=SProd_minus_WProd_EffectSize, group=ROI, color=ROI)) +
+  geom_point() +
+  geom_smooth(method=lm) +
+  labs(x="# well-formed elements", y="SProd - WProd effect size")
