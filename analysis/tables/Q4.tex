@@ -1,0 +1,40 @@
+\documentclass[margin=0.1cm]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage{newtxmath}
+\usepackage[table]{xcolor}
+\definecolor{g}{RGB}{197, 217, 191}
+\definecolor{r}{RGB}{238, 196, 196}
+\definecolor{b}{RGB}{196, 227, 238}
+\usepackage{boldline} 
+\usepackage{multirow}
+\begin{document}
+\scriptsize
+\renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{V{3}c|*{2}{p{15mm}}|*{2}{p{15mm}}|*{2}{p{15mm}}|*{1}{p{15mm}}V{3}} \hlineB{3}
+     & \multicolumn{2}{c|}{\textbf{Experiment 1}} & \multicolumn{2}{c|}{\textbf{Experiment 2a}} & \multicolumn{2}{c|}{\textbf{Experiment 2b}} & \multicolumn{1}{cV{3}}{\textbf{Experiment 3}}\\
+    fROI & SProd vs.\newline WProd & SProd vs.\newline NProd & SProd vs.\newline WProd & SProd vs.\newline NProd & SProd vs.\newline WProd & SProd vs.\newline NProd & SProd vs.\newline WProd \\\hline
+    \multirow{2}{*}{LH PostParietal} & \cellcolor{g}$d=-3.491$\newline$p<0.001$ & $d=0.871$\newline$p=0.200$ & $d=-1.873$\newline$p=0.059$ & $d=-0.043$\newline$p=0.989$ & $d=-0.962$\newline$p=0.354$ & \cellcolor{g}$d=-1.837$\newline$p=0.039$ & $d=-1.034$\newline$p=0.190$\\
+    \multirow{2}{*}{LH midParietal} & \cellcolor{g}$d=-1.731$\newline$p=0.014$ & $d=-0.066$\newline$p=0.907$ & $d=-1.137$\newline$p=0.076$ & $d=-1.053$\newline$p=0.267$ & $d=-0.530$\newline$p=0.594$ & \cellcolor{g}$d=-1.724$\newline$p=0.039$ & $d=0.912$\newline$p=0.240$\\
+    \multirow{2}{*}{LH antParietal} & $d=-1.266$\newline$p=0.053$ & \cellcolor{g}$d=-1.793$\newline$p=0.033$ & $d=-1.194$\newline$p=0.073$ & $d=-1.851$\newline$p=0.060$ & $d=-0.690$\newline$p=0.483$ & \cellcolor{g}$d=-1.706$\newline$p=0.039$ & $d=1.413$\newline$p=0.114$\\
+    \multirow{2}{*}{LH supFrontal} & $d=-1.156$\newline$p=0.064$ & $d=0.964$\newline$p=0.200$ & $d=-0.767$\newline$p=0.200$ & $d=0.072$\newline$p=0.989$ & $d=-0.267$\newline$p=0.769$ & $d=-0.661$\newline$p=0.364$ & $d=-1.132$\newline$p=0.160$\\
+    \multirow{2}{*}{LH Precentral A PrecG} & \cellcolor{g}$d=-1.392$\newline$p=0.037$ & $d=-0.968$\newline$p=0.200$ & $d=-1.400$\newline$p=0.064$ & $d=-0.721$\newline$p=0.443$ & $d=-0.317$\newline$p=0.769$ & $d=-1.093$\newline$p=0.128$ & $d=-1.398$\newline$p=0.114$\\
+    \multirow{2}{*}{LH Precentral B IFGop} & $d=-1.232$\newline$p=0.055$ & $d=0.601$\newline$p=0.373$ & $d=-0.927$\newline$p=0.132$ & $d=0.171$\newline$p=0.898$ & $d=-0.099$\newline$p=0.906$ & $d=0.181$\newline$p=0.750$ & $d=-1.132$\newline$p=0.160$\\
+    \multirow{2}{*}{LH midFrontal} & $d=-1.221$\newline$p=0.055$ & \cellcolor{r}$d=1.895$\newline$p=0.031$ & $d=-1.473$\newline$p=0.064$ & $d=0.192$\newline$p=0.898$ & $d=-0.444$\newline$p=0.673$ & $d=0.364$\newline$p=0.616$ & $d=-0.521$\newline$p=0.477$\\
+    \multirow{2}{*}{LH midFrontalOrb} & $d=-1.036$\newline$p=0.089$ & \cellcolor{r}$d=2.235$\newline$p=0.019$ & $d=-1.174$\newline$p=0.073$ & $d=0.184$\newline$p=0.898$ & $d=0.040$\newline$p=0.943$ & $d=0.558$\newline$p=0.416$ & $d=-0.828$\newline$p=0.275$\\
+    \multirow{2}{*}{LH insula} & \cellcolor{g}$d=-1.601$\newline$p=0.020$ & $d=0.908$\newline$p=0.200$ & $d=-1.092$\newline$p=0.083$ & $d=0.723$\newline$p=0.443$ & $d=0.681$\newline$p=0.483$ & \cellcolor{r}$d=1.627$\newline$p=0.039$ & \cellcolor{g}$d=-3.099$\newline$p=0.006$\\
+    \multirow{2}{*}{LH medialFrontal} & $d=-0.990$\newline$p=0.098$ & \cellcolor{r}$d=2.157$\newline$p=0.019$ & $d=-0.652$\newline$p=0.261$ & $d=0.678$\newline$p=0.443$ & $d=0.351$\newline$p=0.769$ & \cellcolor{r}$d=1.638$\newline$p=0.039$ & $d=-1.290$\newline$p=0.134$\\
+    \multirow{2}{*}{RH PostParietal} & \cellcolor{g}$d=-3.255$\newline$p<0.001$ & $d=0.922$\newline$p=0.200$ & $d=-1.622$\newline$p=0.059$ & $d=0.621$\newline$p=0.473$ & $d=-1.432$\newline$p=0.223$ & $d=-1.376$\newline$p=0.055$ & \cellcolor{g}$d=-3.804$\newline$p=0.003$\\
+    \multirow{2}{*}{RH midParietal} & \cellcolor{g}$d=-2.518$\newline$p=0.001$ & $d=-1.318$\newline$p=0.096$ & $d=-1.363$\newline$p=0.064$ & $d=-1.637$\newline$p=0.063$ & $d=-1.233$\newline$p=0.223$ & \cellcolor{g}$d=-1.802$\newline$p=0.039$ & $d=-0.098$\newline$p=0.879$\\
+    \multirow{2}{*}{RH antParietal} & \cellcolor{g}$d=-2.543$\newline$p=0.001$ & $d=-1.584$\newline$p=0.054$ & $d=-1.364$\newline$p=0.064$ & $d=-1.818$\newline$p=0.060$ & $d=-0.946$\newline$p=0.354$ & \cellcolor{g}$d=-1.468$\newline$p=0.047$ & $d=-0.695$\newline$p=0.350$\\
+    \multirow{2}{*}{RH supFrontal} & \cellcolor{g}$d=-2.369$\newline$p=0.002$ & $d=-0.876$\newline$p=0.200$ & $d=-1.662$\newline$p=0.059$ & $d=-0.830$\newline$p=0.443$ & $d=-1.250$\newline$p=0.223$ & \cellcolor{g}$d=-1.561$\newline$p=0.042$ & \cellcolor{g}$d=-2.722$\newline$p=0.008$\\
+    \multirow{2}{*}{RH Precentral A PrecG} & \cellcolor{g}$d=-2.397$\newline$p=0.002$ & $d=-0.997$\newline$p=0.200$ & $d=-1.283$\newline$p=0.073$ & $d=-0.683$\newline$p=0.443$ & $d=-1.470$\newline$p=0.223$ & \cellcolor{g}$d=-1.455$\newline$p=0.047$ & $d=-1.262$\newline$p=0.134$\\
+    \multirow{2}{*}{RH Precentral B IFGop} & \cellcolor{g}$d=-1.720$\newline$p=0.014$ & $d=-0.298$\newline$p=0.666$ & $d=-1.181$\newline$p=0.073$ & $d=-0.459$\newline$p=0.650$ & $d=-0.614$\newline$p=0.524$ & $d=-0.949$\newline$p=0.185$ & $d=-0.452$\newline$p=0.517$\\
+    \multirow{2}{*}{RH midFrontal} & \cellcolor{g}$d=-3.083$\newline$p<0.001$ & $d=-0.612$\newline$p=0.373$ & $d=-1.633$\newline$p=0.059$ & $d=-1.152$\newline$p=0.233$ & $d=-0.913$\newline$p=0.354$ & $d=-0.563$\newline$p=0.416$ & \cellcolor{g}$d=-2.101$\newline$p=0.022$\\
+    \multirow{2}{*}{RH midFrontalOrb} & \cellcolor{g}$d=-2.596$\newline$p=0.001$ & $d=-1.372$\newline$p=0.093$ & $d=-1.386$\newline$p=0.064$ & $d=-1.603$\newline$p=0.063$ & $d=-0.720$\newline$p=0.483$ & $d=-0.336$\newline$p=0.617$ & \cellcolor{g}$d=-2.201$\newline$p=0.020$\\
+    \multirow{2}{*}{RH insula} & \cellcolor{g}$d=-3.602$\newline$p<0.001$ & $d=-0.397$\newline$p=0.572$ & $d=-1.193$\newline$p=0.073$ & $d=-0.326$\newline$p=0.810$ & $d=-0.242$\newline$p=0.769$ & $d=0.303$\newline$p=0.625$ & \cellcolor{g}$d=-2.960$\newline$p=0.006$\\
+    \multirow{2}{*}{RH medialFrontal} & \cellcolor{g}$d=-2.505$\newline$p=0.001$ & $d=-0.102$\newline$p=0.902$ & $d=-1.171$\newline$p=0.073$ & $d=-0.002$\newline$p=0.997$ & $d=0.224$\newline$p=0.769$ & $d=0.735$\newline$p=0.320$ & \cellcolor{g}$d=-2.384$\newline$p=0.015$\\
+    \hline
+    \multirow{2}{*}{\textbf{MD network}} & \cellcolor{g}$d=-0.692$\newline$p<0.001$ & $d=-0.013$\newline$p=0.878$ & \cellcolor{g}$d=-0.612$\newline$p<0.001$ & \cellcolor{g}$d=-0.212$\newline$p=0.015$ & \cellcolor{g}$d=-0.225$\newline$p=0.010$ & \cellcolor{g}$d=-0.228$\newline$p=0.009$ & \cellcolor{g}$d=-0.353$\newline$p<0.001$\\\hlineB{3}
+    \end{tabular}
+\end{document}

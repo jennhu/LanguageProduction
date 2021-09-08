@@ -1,0 +1,106 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{shapes.misc}
+\usetikzlibrary{positioning}
+
+\begin{document}
+\begin{tikzpicture}[
+    box/.style={rectangle, draw=black, thick, minimum height=3cm, minimum width=4cm},
+]
+\fontfamily{phv}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Experiments 1, 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% SProd
+\begin{scope}
+    \node[box] (sprod-fix) {\Huge +}; 
+    \node[below=0.2cm of sprod-fix] {200 ms};
+    \node[anchor=south west] (sprod-label) at (sprod-fix.north west) {\large \textbf{i.\ SProd}};
+    \node[anchor=south west, yshift=0.3cm] at (sprod-label.north west) {\Large a. Experiments 1 \& 2};
+    
+    \node[box] (sprod-stim) [right=0.5cm of sprod-fix] {\includegraphics[height=2.5cm]{sprod.jpg}};
+    \node[below=0.2cm of sprod-stim, align=left] {2800 ms (speaking) /\\6800 ms (typing)};
+    \node[below=1.3cm of sprod-stim, align=center] {\textbf{Target response:}\\``The girl is smelling a flower''};
+\end{scope}
+
+% WProd
+\begin{scope} [yshift=-6cm]
+    \node[box] (wprod-fix) {\Huge +}; 
+    \node[below=0.2cm of wprod-fix] {200 ms};
+    \node [anchor=south west] at (wprod-fix.north west) {\large \textbf{ii.\ WProd}};
+    
+    \node[box] (wprod-stim) [right=0.5cm of wprod-fix] {\includegraphics[width=3.5cm]{wprod.jpg}};
+    \node[below=0.2cm of wprod-stim, align=left] {2800 ms (speaking) /\\6800 ms (typing)};
+    \node[below=1.3cm of wprod-stim, align=center] {\textbf{Target response:}\\``accordion, ladder, apple''};
+\end{scope}
+
+% NProd
+\begin{scope} [yshift=-12cm]
+    \node[box] (nprod-fix) {\Huge +}; 
+    \node[below=0.2cm of nprod-fix] {200 ms};
+    \node [anchor=south west] at (nprod-fix.north west) {\large \textbf{iii.\ NProd}};
+    
+    \node[box] (nprod-stim) [right=0.5cm of nprod-fix, align=center] {\bfseries BLOLT \,\, SLOAL \\ \\ \bfseries SNEAF \,\, TWORCE};
+    \node[below=0.2cm of nprod-stim, align=left] {2800 ms (speaking) /\\6800 ms (typing)};
+\end{scope}
+
+% VisEvSem
+\begin{scope} [yshift=-17cm]
+    \node[box] (visevsem-fix) {\Huge +}; 
+    \node[below=0.2cm of visevsem-fix] {200 ms};
+    \node [anchor=south west] at (visevsem-fix.north west) {\large \textbf{iv.\ VisEvSem}};
+    
+    \node[box] (visevsem-stim) [right=0.5cm of visevsem-fix, align=center] {\includegraphics[height=2.5cm]{visevsem.jpg}};
+    \node[below=0.2cm of visevsem-stim, align=left] {2800 ms};
+\end{scope}
+
+% SComp
+\begin{scope} [yshift=-21.5cm]
+    \node[box] (scomp-fix) {\Huge +}; 
+    \node[below=0.2cm of scomp-fix] {200 ms};
+    \node [anchor=south west] at (scomp-fix.north west) {\large \textbf{v.\ SComp}};
+    
+    \node[box] (scomp-stim) [right=0.5cm of scomp-fix, align=center] {\bfseries A WOMAN IS\\\bfseries PLAYING THE HARP};
+    \node[below=0.2cm of scomp-stim, align=left] {2800 ms};
+\end{scope}
+
+% WComp
+\begin{scope} [yshift=-26cm]
+    \node[box] (wcomp-fix) {\Huge +}; 
+    \node[below=0.2cm of wcomp-fix] {200 ms};
+    \node [anchor=south west] at (wcomp-fix.north west) {\large \textbf{vi.\ WComp}};
+    
+    \node[box] (wcomp-stim) [right=0.5cm of wcomp-fix, align=center] {\bfseries ARM \, \, DEER \\ \\ \bfseries BUBBLE};
+    \node[below=0.2cm of wcomp-stim, align=left] {2800 ms};
+\end{scope}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Experiment 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% SProd
+\begin{scope} [xshift=10cm]
+    \node[box] (sprod-3-fix) {\Huge +}; 
+    \node[below=0.2cm of sprod-3-fix] {250 ms};
+    \node [anchor=south west] (sprod-3-label) at (sprod-3-fix.north west) {\large \textbf{i.\ SProd}};
+    \node[anchor=south west, yshift=0.3cm] at (sprod-3-label.north west) {\Large b. Experiment 3};
+    
+    \node[box] (sprod-3-stim) [right=0.5cm of sprod-3-fix] {\includegraphics[height=2.5cm]{sprod-3.png}};
+    \node[below=0.2cm of sprod-3-stim, align=left] {3750 ms};
+    \node[below=1.3cm of sprod-3-stim, align=center] {\textbf{Target response:}\\``The woman is tossing a frisbee''};
+\end{scope}
+
+% WProd
+\begin{scope} [xshift=10cm, yshift=-6cm]
+    \node[box] (wprod-3-fix) {\Huge +}; 
+    \node[below=0.2cm of wprod-3-fix] {250 ms};
+    \node [anchor=south west] at (wprod-3-fix.north west) {\large \textbf{ii.\ WProd}};
+    
+    \node[box] (wprod-3-stim) [right=0.5cm of wprod-3-fix] {\includegraphics[height=2cm]{wprod-3.png}};
+    \node[below=0.2cm of wprod-3-stim, align=left] {3750 ms};
+    \node[below=1.3cm of wprod-3-stim, align=center] {\textbf{Target response:}\\``a necklace, a pumpkin, a hammer''};
+\end{scope}
+
+\end{tikzpicture}
+\end{document}
