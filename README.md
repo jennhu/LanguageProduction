@@ -1,6 +1,6 @@
 # Materials for Hu, Small, et al. (2021)
 
-This repository contains scripts and stimuli for the experiments described in the paper "The language network supports both lexical access and sentence generation during language production" (Hu, Small, et al. 2021). This `README` contains information about the design of the experiments, paths to the stimuli, and instructions for running the scripts.
+This repository contains scripts and stimuli for the experiments described in the paper ["The language network supports both lexical access and sentence generation during language production"](https://www.biorxiv.org/content/10.1101/2021.09.10.459596v1) (Hu, Small, et al. 2021). This `README` contains information about the design of the experiments, paths to the stimuli, and instructions for running the scripts.
 
 Note that the instructions and trial timing information below reflect the *spoken* task in Experiments 1 & 2a. Please refer to the paper and code comments for information about the *typed* task (Experiment 2b). Experiment 3 is briefly discussed [here](#experiment-3); please refer to the paper for details.
 
