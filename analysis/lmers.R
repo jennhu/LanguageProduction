@@ -10,8 +10,6 @@ library('tibble')
 ################################################################################
 
 # LH lang network fROIs: 1-6; no restrictions on MD for now
-# TODO: determine whether to just use LH for MD (ROI<=10)
-# Ev said we might report full network results in paper and report LH and RH in SI?
 fROIs <- list(lang=1:6, MD=1:20)
 fROI_str <- list(lang="1-6", MD="1-20")
 
@@ -95,10 +93,6 @@ fit_model <- function(model_data, model_type, plot=FALSE) {
     stop("model_type should be `network` or `separate_fROIs`")
   }
   summary <- summary(mixed.lmer)
-  #print(summary)
-  # TODO: Figure out correct way to get p-values from fixation models.
-  # the second line of results (idx =2) shows the results relative to the second line, so comparing the
-  #two conditions -- I think this is right - HS
   p_value_idx <- 2
   p_value <- summary$coefficients[p_value_idx,5]
   cohen_d <- lme.dscore(mixed.lmer, model_data, type="lme4")$d
@@ -108,7 +102,6 @@ fit_model <- function(model_data, model_type, plot=FALSE) {
     qqnorm(resid(mixed.lmer))
     qqline(resid(mixed.lmer))
   }
-  #TODO: include beta values in an R output for the OSF page
   return(list(p=p_value, cohen_d=cohen_d))
 }
 
@@ -386,7 +379,6 @@ SProd <- filter(dfs[["expt2b_prod"]], Effect=="SProd_typed")
 WProd <- filter(dfs[["expt2b_prod"]], Effect=="WProd_typed")
 SProd$WProd_EffectSize <- WProd$EffectSize[match(SProd$Subject, WProd$Subject)]
 SProd$SProd_minus_WProd_EffectSize <- SProd$EffectSize - SProd$WProd_EffectSize
-# TODO: find run-level or trial-level data
 
 # Next, check reliability of typing measure.
 typ <- read.csv("../data/all_SPROD_annotated_data_20201210.csv")
@@ -435,6 +427,9 @@ test <- cor.test(roi_means$mean_num_well_formed, roi_means$SProd_minus_WProd_Eff
 print(sprintf("p=%f, Pearson r=%f", test$p.value, test$estimate))
 # Plot typing well-formedness vs. SProd>WProd effect.
 ggplot(data=roi_means, aes(x=mean_num_well_formed, y=SProd_minus_WProd_EffectSize)) +
-  geom_point() +
+  geom_point(size=3) +
   geom_smooth(method=lm) +
-  labs(x="# well-formed elements", y="SProd - WProd effect size")
+  labs(x="# well-formed elements", y="SProd - WProd effect size") +
+  theme_classic(base_size = 20)
+# Save figure.
+ggsave("../figures/figures/wellformed_vs_SProd-WProd.pdf", width=5, height=4)
