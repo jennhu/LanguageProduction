@@ -1,0 +1,25 @@
+\documentclass[margin=0.1cm]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage{newtxmath}
+\usepackage[table]{xcolor}
+\definecolor{g}{RGB}{197, 217, 191}
+\definecolor{r}{RGB}{238, 196, 196}
+\definecolor{b}{RGB}{196, 227, 238}
+\usepackage{boldline} 
+\usepackage{multirow}
+\begin{document}
+\scriptsize
+\renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{V{3}c|*{2}{p{15mm}}|*{1}{p{15mm}}|*{2}{p{15mm}}V{3}} \hlineB{3}
+     & \multicolumn{2}{c|}{\textbf{Experiment 1}} & \multicolumn{1}{c|}{\textbf{Experiment 2}} & \multicolumn{2}{cV{3}}{\textbf{Experiment 3}}\\
+    fROI & WProd vs.\newline NProd & SProd vs.\newline WProd & SProd vs.\newline WProd & WProd (typed) vs.\newline NProd (typed) & SProd (typed) vs.\newline WProd (typed) \\\hline
+    \multirow{2}{*}{\textbf{Language network}} & $\mathbf{d=0.325}$\newline$\mathbf{p=0.004}$ & \cellcolor{r}$\mathbf{d=0.499}$\newline$\mathbf{p<0.001}$ & \cellcolor{r}$\mathbf{d=0.609}$\newline$\mathbf{p<0.001}$ & $\mathbf{d=-0.105}$\newline$\mathbf{p=0.524}$ & $\mathbf{d=0.830}$\newline$\mathbf{p<0.001}$\\\hline
+    \multirow{2}{*}{IFGorb} & $d=0.381$\newline$p=0.387$ & \cellcolor{r}$d=1.852$\newline$p<0.001$ & \cellcolor{r}$d=2.727$\newline$p=0.002$ & $d=-0.150$\newline$p=0.825$ & $d=2.966$\newline$p<0.001$\\
+    \multirow{2}{*}{IFG} & $d=1.533$\newline$p=0.002$ & \cellcolor{r}$d=1.029$\newline$p=0.011$ & $d=1.003$\newline$p=0.124$ & $d=-0.125$\newline$p=0.825$ & $d=1.570$\newline$p=0.014$\\
+    \multirow{2}{*}{MFG} & $d=0.900$\newline$p=0.049$ & \cellcolor{r}$d=1.068$\newline$p=0.010$ & $d=1.158$\newline$p=0.097$ & $d=0.148$\newline$p=0.825$ & $d=1.942$\newline$p=0.005$\\
+    \multirow{2}{*}{AntTemp} & $d=0.304$\newline$p=0.428$ & \cellcolor{r}$d=1.756$\newline$p<0.001$ & \cellcolor{r}$d=2.251$\newline$p=0.005$ & $d=-1.881$\newline$p=0.029$ & $d=2.988$\newline$p<0.001$\\
+    \multirow{2}{*}{PostTemp} & $d=0.712$\newline$p=0.105$ & \cellcolor{r}$d=1.994$\newline$p<0.001$ & \cellcolor{r}$d=2.816$\newline$p=0.002$ & $d=-0.831$\newline$p=0.378$ & $d=3.693$\newline$p<0.001$\\
+    \multirow{2}{*}{AngG} & $d=1.197$\newline$p=0.011$ & \cellcolor{r}$d=2.519$\newline$p<0.001$ & \cellcolor{r}$d=4.396$\newline$p<0.001$ & $d=-0.769$\newline$p=0.378$ & $d=2.718$\newline$p<0.001$\\\hlineB{3}
+    \end{tabular}
+\end{document}

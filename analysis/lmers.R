@@ -15,40 +15,43 @@ fROI_str <- list(lang="1-6", MD="1-20")
 
 # Load all data from experiments 1, 2a, 2b, 3.
 all_data <- read.csv("../data/fMRI_all_indiv_production_data.csv")
+# Do some experiment reordering/renaming.
+# all_data$Expt <- revalue(
+#   all_data$Expt, 
+#   c("E2a"="E1", "E2b"="E3", "E3"="E2")
+# )
 lang_data <- filter(all_data, Network=="lang" & ROI %in% fROIs$lang)
 MD_data <- filter(all_data, Network=="MD" & ROI %in% fROIs$MD)
 
+
 # Construct list of dfs for lang network, named by experiment and task.
 dfs_lang <- list(
-  expt1_prod=filter(lang_data, Expt=="E1" & CriticalTask=="ProdLoc_spoken"),
-  expt1_langloc=filter(lang_data, Expt=="E1" & CriticalTask=="langloc"),
-  expt2a_prod=filter(lang_data, Expt=="E2" & CriticalTask=="ProdLoc_spoken"), 
-  expt2a_langloc=filter(lang_data, Expt=="E2" & CriticalTask=="langloc"), 
-  expt2b_prod=filter(lang_data, Expt=="E2" & CriticalTask=="ProdLoc_typed"), 
-  expt2b_langloc=filter(lang_data, Expt=="E2" & CriticalTask=="langloc"), # NOTE: same as 2a langloc
-  expt3_prod=filter(lang_data, Expt=="E3" & CriticalTask=="NameRead"), 
-  expt3_langloc=filter(lang_data, Expt=="E3" & CriticalTask=="langloc")
+  expt1_prod=filter(lang_data, (Expt=="E1" | Expt=="E2") & CriticalTask=="ProdLoc_spoken"),
+  expt1_langloc=filter(lang_data, (Expt=="E1" | Expt=="E2") & CriticalTask=="langloc"),
+  expt2_prod=filter(lang_data, Expt=="E3" & CriticalTask=="NameRead"), # new Exp2 = old Exp3
+  expt2_langloc=filter(lang_data, Expt=="E3" & CriticalTask=="langloc"), # new Exp2 = old Exp3
+  expt3_prod=filter(lang_data, Expt=="E2" & CriticalTask=="ProdLoc_typed"),
+  expt3_langloc=filter(lang_data, Expt=="E2" & CriticalTask=="langloc") # NOTE: same as old 2a langloc
 )
 
-# Replace *Prod with *Prod_typed in typing experiment (2b) for easy analysis.
-dfs_lang$expt2b_prod$Effect <- revalue(
-  dfs_lang$expt2b_prod$Effect, 
+# Replace *Prod with *Prod_typed in typing experiment (3) for easy analysis.
+dfs_lang$expt3_prod$Effect <- revalue(
+  dfs_lang$expt3_prod$Effect, 
   c("SProd"="SProd_typed", "WProd"="WProd_typed", "NProd"="NProd_typed")
 )
 
 # Construct list of dfs for MD network, named by experiment and task.
 dfs_MD_prod <- list(
-  expt1_MD_prod=filter(MD_data, Expt=="E1" & CriticalTask=="ProdLoc_spoken"),
-  expt2a_MD_prod=filter(MD_data, Expt=="E2" & CriticalTask=="ProdLoc_spoken"),
-  expt2b_MD_prod=filter(MD_data, Expt=="E2" & CriticalTask=="ProdLoc_typed"),
-  expt3_MD_prod=filter(MD_data, Expt=="E3" & CriticalTask=="NameRead")
+  expt1_MD_prod=filter(MD_data, (Expt=="E1" | Expt=="E2") & CriticalTask=="ProdLoc_spoken"),
+  expt2_MD_prod=filter(MD_data, Expt=="E3" & CriticalTask=="NameRead"),
+  expt3_MD_prod=filter(MD_data, Expt=="E2" & CriticalTask=="ProdLoc_typed")
 )
 
 # Also get MD localizer contrasts for validation analyses.
 dfs_MD_loc <- list(
-  expt1_MD_loc=filter(MD_data, Expt=="E1" & CriticalTask=="spWM"),
-  expt2_MD_loc=filter(MD_data, Expt=="E2" & CriticalTask=="spWM"), # same for 2a and 2b
-  expt3_MD_loc=filter(MD_data, Expt=="E3" & CriticalTask=="spWM")
+  expt1_MD_loc=filter(MD_data, (Expt=="E1" | Expt=="E2") & CriticalTask=="spWM"),
+  expt2_MD_loc=filter(MD_data, Expt=="E3" & CriticalTask=="spWM"), # same for 2a and 2b
+  expt3_MD_loc=filter(MD_data, Expt=="E2" & CriticalTask=="spWM")
 )
 
 # Combine all data into `dfs`.
@@ -191,7 +194,7 @@ initialize_tbl <- function(model_type) {
 # SANITY CHECK: Validation of language and MD fROIs
 ################################################################################
 
-#data: Expt1, 2a/2b, 3 langloc & spWM (note: same for 2a and 2b)
+#data: Expt1, 2, 3 langloc & spWM (note: same for old 2a and 2b)
 
 validate_fROIs <- function(loc_data, cond1_name, cond2_name, network) {
   raw_p_values <- list()
@@ -209,7 +212,7 @@ validate_fROIs <- function(loc_data, cond1_name, cond2_name, network) {
   rows <- tibble(
     cond1=cond1_name,
     cond2=cond2_name, 
-    expt_data=sprintf("%s/%s", cond1_src, cond2_src),
+    # expt_data=sprintf("%s/%s", cond1_src, cond2_src),
     ROI=fROIs[[network]], 
     p_value_uncorrected=unlist(raw_p_values), 
     p_value_fdr_corrected=adjusted_p_values,
@@ -224,12 +227,12 @@ validate_fROIs <- function(loc_data, cond1_name, cond2_name, network) {
 }
 
 # sentences vs. nonwords (langloc) ----- 
-langloc_data <- dfs_lang[names(dfs_lang) %in% c("expt1_langloc", "expt2a_langloc", "expt3_langloc")]
+langloc_data <- dfs_lang[names(dfs_lang) %in% c("expt1_langloc", "expt2_langloc")] # new 3 already included in 1
 langloc_data <- bind_rows(langloc_data)
 lang_sepfROI_results <- validate_fROIs(langloc_data, "S", "N", "lang")
 
 # hard vs. easy spatial working memory (MD) ----
-md_data <- dfs_MD_loc[names(dfs_MD_loc) %in% c("expt1_MD_loc", "expt2a_MD_loc", "expt3_MD_loc")]
+md_data <- dfs_MD_loc[names(dfs_MD_loc) %in% c("expt1_MD_loc", "expt2_MD_loc")] # new 3 already included in 1
 md_data <- bind_rows(md_data)
 md_sepfROI_results <- validate_fROIs(md_data, "H", "E", "MD")
 
@@ -240,13 +243,13 @@ write_csv(md_sepfROI_results, "results/validation_md.csv")
 # Q1: Does sentence production elicit a response in the language network?
 ################################################################################
 
-#data: Expt1, 2a, 3 production & Expt1, 2a, 3 langloc
+#data: Expt1, 2 production & Expt1, 2 langloc
 Q1_network_results <- initialize_tbl("network")
 Q1_sepfROI_results <- initialize_tbl("separate_fROIs")
 
 # SProd vs. fixation ----
 cond1_name = "SProd"; cond2_name = "fixation"
-for (expt in c("expt1", "expt2a", "expt3")) {
+for (expt in c("expt1", "expt2")) {
   cond1_src = paste(expt, "prod", sep="_")
   cond2_src = paste(expt, "prod", sep="_")
   result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name)
@@ -256,7 +259,7 @@ for (expt in c("expt1", "expt2a", "expt3")) {
 
 # SProd vs. nonwords (langloc) ----- 
 cond1_name = "SProd"; cond2_name = "N"
-for (expt in c("expt1", "expt2a", "expt3")) {
+for (expt in c("expt1", "expt2")) {
   cond1_src = paste(expt, "prod", sep="_")
   cond2_src = paste(expt, "langloc", sep="_")
   result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name)
@@ -266,7 +269,7 @@ for (expt in c("expt1", "expt2a", "expt3")) {
 
 # SProd vs. VisEvSem ------ 
 cond1_name = "SProd"; cond2_name = "VisEvSem"
-for (expt in c("expt1", "expt2a")) {
+for (expt in c("expt1")) {
   cond1_src = paste(expt, "prod", sep="_")
   cond2_src = paste(expt, "prod", sep="_")
   result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name)
@@ -283,22 +286,23 @@ Q2_network_results <- initialize_tbl("network")
 Q2_sepfROI_results <- initialize_tbl("separate_fROIs")
 
 # SProd_typed vs. fixation ----
-result <- fit_all_models("expt2b_prod", "expt2b_prod", "SProd_typed", "fixation")
+result <- fit_all_models("expt3_prod", "expt3_prod", "SProd_typed", "fixation")
 Q2_network_results <- add_row(Q2_network_results, result$network)
 Q2_sepfROI_results <- bind_rows(Q2_sepfROI_results, result$separate_fROIs)
 
 # SProd_typed vs nonwords (langloc) ----
-result <- fit_all_models("expt2b_prod", "expt2b_langloc", "SProd_typed", "N")
+result <- fit_all_models("expt3_prod", "expt3_langloc", "SProd_typed", "N")
 Q2_network_results <- add_row(Q2_network_results, result$network)
 Q2_sepfROI_results <- bind_rows(Q2_sepfROI_results, result$separate_fROIs)
 
 # SProd_typed vs VisEvSem ----
-result <- fit_all_models("expt2b_prod", "expt2b_prod", "SProd_typed", "VisEvSem")
+result <- fit_all_models("expt3_prod", "expt3_prod", "SProd_typed", "VisEvSem")
 Q2_network_results <- add_row(Q2_network_results, result$network)
 Q2_sepfROI_results <- bind_rows(Q2_sepfROI_results, result$separate_fROIs)
 
 # SProd_spoken vs. SProd_typed ----
-result <- fit_all_models("expt2b_prod", "expt2a_prod", "SProd_typed", "SProd")
+# TODO: filter expt1_prod to only contain subjects from expt3_prod
+result <- fit_all_models("expt3_prod", "expt1_prod", "SProd_typed", "SProd")
 Q2_network_results <- add_row(Q2_network_results, result$network)
 Q2_sepfROI_results <- bind_rows(Q2_sepfROI_results, result$separate_fROIs)
     
@@ -311,10 +315,10 @@ Q3_network_results <- initialize_tbl("network")
 Q3_sepfROI_results <- initialize_tbl("separate_fROIs")
 
 # WProd vs NProd ----
-for (expt in c("expt1", "expt2a", "expt2b")) {
+for (expt in c("expt1", "expt3")) {
   cond1_src = paste(expt, "prod", sep="_")
   cond2_src = paste(expt, "prod", sep="_")
-  if (expt=="expt2b") {
+  if (expt=="expt3") {
     cond1_name = "WProd_typed"; cond2_name = "NProd_typed"
   }
   else {
@@ -326,10 +330,10 @@ for (expt in c("expt1", "expt2a", "expt2b")) {
 }
 
 # SProd vs. WProd ----
-for (expt in c("expt1", "expt2a", "expt2b", "expt3")) {
+for (expt in c("expt1", "expt2", "expt3")) {
   cond1_src = paste(expt, "prod", sep="_")
   cond2_src = paste(expt, "prod", sep="_")
-  if (expt=="expt2b") {
+  if (expt=="expt3") {
     cond1_name = "SProd_typed"; cond2_name = "WProd_typed"
   }
   else {
@@ -341,16 +345,16 @@ for (expt in c("expt1", "expt2a", "expt2b", "expt3")) {
 }
 
 # MD network data ----
-for (expt in c("expt1", "expt2a", "expt2b", "expt3")) {
+for (expt in c("expt1", "expt2", "expt3")) {
   cond1_src = paste(expt, "MD_prod", sep="_")
   cond2_src = paste(expt, "MD_prod", sep="_")
-  # Don't need to add *_typed for expt2b for MD data
+  # Don't need to add *_typed for expt3 for MD data
   cond1_name = "SProd"; cond2_name = "WProd"
   result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name, network="MD")
   Q3_network_results <- add_row(Q3_network_results, result$network)
   Q3_sepfROI_results <- bind_rows(Q3_sepfROI_results, result$separate_fROIs)
-  # Also compare SProd and NProd for Exp. 1 & 2 only.
-  if (expt != "expt3") {
+  # Also compare SProd and NProd for Exp. 1 & 3 only.
+  if (expt != "expt2") {
     cond1_name = "SProd"; cond2_name = "NProd"
     result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name, network="MD")
     Q3_network_results <- add_row(Q3_network_results, result$network)
