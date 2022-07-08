@@ -23,15 +23,15 @@ all_data <- read.csv("../data/fMRI_all_indiv_production_data.csv")
 lang_data <- filter(all_data, Network=="lang" & ROI %in% fROIs$lang)
 MD_data <- filter(all_data, Network=="MD" & ROI %in% fROIs$MD)
 
-
 # Construct list of dfs for lang network, named by experiment and task.
 dfs_lang <- list(
   expt1_prod=filter(lang_data, Expt=="E1" & CriticalTask=="ProdLoc_spoken"),
   expt1_langloc=filter(lang_data, Expt=="E1" & CriticalTask=="langloc"),
+  expt1_prod_speakANDtype = filter(lang_data, Expt=="E1" & CriticalTask=="ProdLoc_spoken" & Speak_and_type==1),
   expt2_prod=filter(lang_data, Expt=="E2" & CriticalTask=="NameRead"), # new Exp2 = old Exp3
   expt2_langloc=filter(lang_data, Expt=="E2" & CriticalTask=="langloc"), # new Exp2 = old Exp3
   expt3_prod=filter(lang_data, Expt=="E3" & CriticalTask=="ProdLoc_typed"),
-  expt3_langloc=filter(lang_data, Expt=="E3" & CriticalTask=="langloc") # NOTE: same as old 2a langloc
+  expt3_langloc=filter(lang_data, Expt=="E1" & CriticalTask=="langloc" & Speak_and_type==1) # NOTE: same as old 2a langloc
 )
 
 # Replace *Prod with *Prod_typed in typing experiment (3) for easy analysis.
@@ -50,8 +50,8 @@ dfs_MD_prod <- list(
 # Also get MD localizer contrasts for validation analyses.
 dfs_MD_loc <- list(
   expt1_MD_loc=filter(MD_data, Expt=="E1" & CriticalTask=="spWM"),
-  expt2_MD_loc=filter(MD_data, Expt=="E2" & CriticalTask=="spWM"), # same for 2a and 2b
-  expt3_MD_loc=filter(MD_data, Expt=="E3" & CriticalTask=="spWM")
+  expt2_MD_loc=filter(MD_data, Expt=="E2" & CriticalTask=="spWM"), 
+  expt3_MD_loc=filter(MD_data, Expt=="E1" & CriticalTask=="spWM" & Speak_and_type==1)
 )
 
 # Combine all data into `dfs`.
@@ -281,7 +281,7 @@ for (expt in c("expt1")) {
 # Q2: Does the language network’s response to sentence production generalize across output modality?
 ####################################################################################################
 
-# data: Expt2a,2b production & Expt2a,2b langloc
+# data: Expt 1,3 production & Expt1,3 langloc (subjects with both spoken and typed)
 Q2_network_results <- initialize_tbl("network")
 Q2_sepfROI_results <- initialize_tbl("separate_fROIs")
 
@@ -301,8 +301,7 @@ Q2_network_results <- add_row(Q2_network_results, result$network)
 Q2_sepfROI_results <- bind_rows(Q2_sepfROI_results, result$separate_fROIs)
 
 # SProd_spoken vs. SProd_typed ----
-# TODO: filter expt1_prod to only contain subjects from expt3_prod
-result <- fit_all_models("expt3_prod", "expt1_prod", "SProd_typed", "SProd")
+result <- fit_all_models("expt3_prod", "expt1_prod_speakANDtype", "SProd_typed", "SProd")
 Q2_network_results <- add_row(Q2_network_results, result$network)
 Q2_sepfROI_results <- bind_rows(Q2_sepfROI_results, result$separate_fROIs)
     
@@ -310,7 +309,7 @@ Q2_sepfROI_results <- bind_rows(Q2_sepfROI_results, result$separate_fROIs)
 # Q3: Does the language network respond to both lexical access and syntactic encoding?
 ####################################################################################################
 
-# data: Expt1, 2a, 2b production, Expt 3
+# data: Expt1, 3 production, Expt 2
 Q3_network_results <- initialize_tbl("network")
 Q3_sepfROI_results <- initialize_tbl("separate_fROIs")
 
@@ -379,8 +378,8 @@ write_csv(Q3_sepfROI_results, "results/Q3_sepfROIs.csv")
 ################################################################################
 
 # First, check whether SProd>WProd effects are stable within individuals.
-SProd <- filter(dfs[["expt2b_prod"]], Effect=="SProd_typed")
-WProd <- filter(dfs[["expt2b_prod"]], Effect=="WProd_typed")
+SProd <- filter(dfs[["expt3_prod"]], Effect=="SProd_typed")
+WProd <- filter(dfs[["expt3_prod"]], Effect=="WProd_typed")
 SProd$WProd_EffectSize <- WProd$EffectSize[match(SProd$Subject, WProd$Subject)]
 SProd$SProd_minus_WProd_EffectSize <- SProd$EffectSize - SProd$WProd_EffectSize
 
