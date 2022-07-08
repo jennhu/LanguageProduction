@@ -13,7 +13,7 @@ library('tibble')
 fROIs <- list(lang=1:6, MD=1:20)
 fROI_str <- list(lang="1-6", MD="1-20")
 
-# Load all data from experiments 1, 2a, 2b, 3.
+# Load all data from experiments 1, 2, 3
 all_data <- read.csv("../data/fMRI_all_indiv_production_data.csv")
 # Do some experiment reordering/renaming.
 # all_data$Expt <- revalue(
@@ -26,12 +26,12 @@ MD_data <- filter(all_data, Network=="MD" & ROI %in% fROIs$MD)
 
 # Construct list of dfs for lang network, named by experiment and task.
 dfs_lang <- list(
-  expt1_prod=filter(lang_data, (Expt=="E1" | Expt=="E2") & CriticalTask=="ProdLoc_spoken"),
-  expt1_langloc=filter(lang_data, (Expt=="E1" | Expt=="E2") & CriticalTask=="langloc"),
-  expt2_prod=filter(lang_data, Expt=="E3" & CriticalTask=="NameRead"), # new Exp2 = old Exp3
-  expt2_langloc=filter(lang_data, Expt=="E3" & CriticalTask=="langloc"), # new Exp2 = old Exp3
-  expt3_prod=filter(lang_data, Expt=="E2" & CriticalTask=="ProdLoc_typed"),
-  expt3_langloc=filter(lang_data, Expt=="E2" & CriticalTask=="langloc") # NOTE: same as old 2a langloc
+  expt1_prod=filter(lang_data, Expt=="E1" & CriticalTask=="ProdLoc_spoken"),
+  expt1_langloc=filter(lang_data, Expt=="E1" & CriticalTask=="langloc"),
+  expt2_prod=filter(lang_data, Expt=="E2" & CriticalTask=="NameRead"), # new Exp2 = old Exp3
+  expt2_langloc=filter(lang_data, Expt=="E2" & CriticalTask=="langloc"), # new Exp2 = old Exp3
+  expt3_prod=filter(lang_data, Expt=="E3" & CriticalTask=="ProdLoc_typed"),
+  expt3_langloc=filter(lang_data, Expt=="E3" & CriticalTask=="langloc") # NOTE: same as old 2a langloc
 )
 
 # Replace *Prod with *Prod_typed in typing experiment (3) for easy analysis.
@@ -42,16 +42,16 @@ dfs_lang$expt3_prod$Effect <- revalue(
 
 # Construct list of dfs for MD network, named by experiment and task.
 dfs_MD_prod <- list(
-  expt1_MD_prod=filter(MD_data, (Expt=="E1" | Expt=="E2") & CriticalTask=="ProdLoc_spoken"),
-  expt2_MD_prod=filter(MD_data, Expt=="E3" & CriticalTask=="NameRead"),
-  expt3_MD_prod=filter(MD_data, Expt=="E2" & CriticalTask=="ProdLoc_typed")
+  expt1_MD_prod=filter(MD_data, Expt=="E1" & CriticalTask=="ProdLoc_spoken"),
+  expt2_MD_prod=filter(MD_data, Expt=="E2" & CriticalTask=="NameRead"),
+  expt3_MD_prod=filter(MD_data, Expt=="E3" & CriticalTask=="ProdLoc_typed")
 )
 
 # Also get MD localizer contrasts for validation analyses.
 dfs_MD_loc <- list(
-  expt1_MD_loc=filter(MD_data, (Expt=="E1" | Expt=="E2") & CriticalTask=="spWM"),
-  expt2_MD_loc=filter(MD_data, Expt=="E3" & CriticalTask=="spWM"), # same for 2a and 2b
-  expt3_MD_loc=filter(MD_data, Expt=="E2" & CriticalTask=="spWM")
+  expt1_MD_loc=filter(MD_data, Expt=="E1" & CriticalTask=="spWM"),
+  expt2_MD_loc=filter(MD_data, Expt=="E2" & CriticalTask=="spWM"), # same for 2a and 2b
+  expt3_MD_loc=filter(MD_data, Expt=="E3" & CriticalTask=="spWM")
 )
 
 # Combine all data into `dfs`.

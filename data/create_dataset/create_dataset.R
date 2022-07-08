@@ -2,7 +2,7 @@ library('plyr')
 library('tidyverse')
 library('tibble')
 
-load <- function(mean_data, expt_id, network_id, localizer_contrast, task, prefix) {
+load <- function(mean_data, expt_id, network_id, localizer_contrast, task, speak_and_type, prefix) {
   if(mean_data){
     #load the summary mean effect size file
     message(sprintf("toolbox_output/%s_spm_ss_mROI_data.summaries.EffectSize.csv", prefix))
@@ -58,6 +58,7 @@ load <- function(mean_data, expt_id, network_id, localizer_contrast, task, prefi
                           Localizer_contrast = localizer_contrast,
                           CriticalTask = task,
                           ROI_name = ROI_names[match(ROI,all_ROIs)],
+                          Speak_and_type = speak_and_type,
                           Hemisphere = if_else(ROI %in% left_ROIs, "LH","RH"))
 
   
@@ -68,48 +69,48 @@ load <- function(mean_data, expt_id, network_id, localizer_contrast, task, prefi
 
 mean_data = TRUE
 all_dfs_mean <- list(
-                E1_lang_lang = load(mean_data,"E1","lang","S>N","langloc",'expt1_mROI_n15_langlocSNfROIs_langloc_wo_typingEFFECT_20201103'),
-                E1_lang_prod = load(mean_data,"E1","lang","S>N","ProdLoc_spoken",'expt1_mROI_n15_langlocSNfROIs_ProdLoc_wo_typing_EFFECT_20201103'),
-                E2_lang_lang = load(mean_data,"E1","lang","S>N","langloc",'expt2_mROI_n14_langlocSNfROIs_langloc_w_typingEFFECT_20201103'),
-                E2_lang_prod = load(mean_data,"E1","lang","S>N","ProdLoc_spoken",'expt2a_mROI_n14_langlocSNfROIs_ProdLoc_w_typingEFFECT_20201103'),
-                E2_lang_prod = load(mean_data,"E3","lang","S>N","ProdLoc_typed",'expt2b_mROI_n14_langlocSNfROIs_ProdLoc_typingEFFECT_20201103'),
-                E3_lang_lang = load(mean_data,"E2","lang","S>N","langloc",'expt3_mROI_n12_lang_fROIs_lang_EFFECT_20201103'),
-                E3_lang_prod = load(mean_data,"E2","lang","S>N","NameRead",'expt3_mROI_n12_lang_fROIs_nameread_EFFECT_20201103'),
-                E1_MD_spWM = load(mean_data,"E1","MD","H>E","spWM",'expt1_mROI_n14_spWM_HEfROIs_spWM_wo_typing_EFFECT_20201103'),
-                E1_MD_prod = load(mean_data,"E1","MD","H>E","ProdLoc_spoken",'expt1_mROI_n14_spWM_HEfROIs_ProdLoc_wo_typing_EFFECT_20201103'),
-                E2_MD_spWM = load(mean_data,"E1", "MD","H>E","spWM", 'expt2_mROI_n14_spWM_HEfROIs_spWM_w_typingEFFECT_20201103' ),
-                E2_MD_prod = load(mean_data,"E1","MD","H>E","ProdLoc_spoken", 'expt2a_mROI_n14_spWM_HEfROIs_ProdLoc_w_typingEFFECT_20201103'),
-                E2_MD_prod = load(mean_data,"E3","MD","H>E","ProdLoc_typed",'expt2b_mROI_n14_spWM_HEfROIs_ProdLoc_typingEFFECT_20201103'),
-                E3_MD_spWM = load(mean_data,"E2","MD","H>E","spWM",'expt3_mROI_n11_spWM_HEfROIs_spWM_EFFECT_20201103'),
-                E3_MD_prod = load(mean_data,"E2","MD","H>E","NameRead",'expt3_mROI_n11_spWM_HEfROIs_nameread_EFFECT_20201103'),
-                E2_lowlevel_speaking_prodSpoken = load(mean_data,"E1","lowlevel_speaking","NProd>Fix","ProdLoc_spoken",'expt2_mROI_n14_ProdLoc_ArticfROIs_ProdLocEFFECT_20201103'),
-                E2_lowlevel_speaking_prodTyped = load(mean_data,"E1","lowlevel_speaking","NProd>Fix","ProdLoc_typed",'expt2_mROI_n14_ProdLoc_ArticfROIs_ProdLoc_typingEFFECT_20201103'),
-                E2_lowlevel_typing_prodSpoken = load(mean_data, "E3","lowlevel_typing","NProd>Fix","ProdLoc_spoken",'expt2_mROI_n14_ProdLoc_typing_ArticfROIs_ProdLocEFFECT_20201103'),
-                E2_lowlevel_typing_prodTyped = load(mean_data, "E3","lowlevel_typing","NProd>Fix","ProdLoc_typed",'expt2_mROI_n14_ProdLoctyp_ArticfROIs_ProdLoctypEFFECT_20201103')
+                E1_lang_lang = load(mean_data,"E1","lang","S>N","langloc",0,'expt1_mROI_n15_langlocSNfROIs_langloc_wo_typingEFFECT_20201103'),
+                E1_lang_prod = load(mean_data,"E1","lang","S>N","ProdLoc_spoken",0,'expt1_mROI_n15_langlocSNfROIs_ProdLoc_wo_typing_EFFECT_20201103'),
+                E2_lang_lang = load(mean_data,"E1","lang","S>N","langloc",0,'expt2_mROI_n14_langlocSNfROIs_langloc_w_typingEFFECT_20201103'),
+                E2_lang_prod = load(mean_data,"E1","lang","S>N","ProdLoc_spoken",1,'expt2a_mROI_n14_langlocSNfROIs_ProdLoc_w_typingEFFECT_20201103'),
+                E2_lang_prod = load(mean_data,"E3","lang","S>N","ProdLoc_typed",1,'expt2b_mROI_n14_langlocSNfROIs_ProdLoc_typingEFFECT_20201103'),
+                E3_lang_lang = load(mean_data,"E2","lang","S>N","langloc",0,'expt3_mROI_n12_lang_fROIs_lang_EFFECT_20201103'),
+                E3_lang_prod = load(mean_data,"E2","lang","S>N","NameRead",0,'expt3_mROI_n12_lang_fROIs_nameread_EFFECT_20201103'),
+                E1_MD_spWM = load(mean_data,"E1","MD","H>E","spWM",0,'expt1_mROI_n14_spWM_HEfROIs_spWM_wo_typing_EFFECT_20201103'),
+                E1_MD_prod = load(mean_data,"E1","MD","H>E","ProdLoc_spoken",0,'expt1_mROI_n14_spWM_HEfROIs_ProdLoc_wo_typing_EFFECT_20201103'),
+                E2_MD_spWM = load(mean_data,"E1", "MD","H>E","spWM",1, 'expt2_mROI_n14_spWM_HEfROIs_spWM_w_typingEFFECT_20201103' ),
+                E2_MD_prod = load(mean_data,"E1","MD","H>E","ProdLoc_spoken",1,'expt2a_mROI_n14_spWM_HEfROIs_ProdLoc_w_typingEFFECT_20201103'),
+                E2_MD_prod = load(mean_data,"E3","MD","H>E","ProdLoc_typed",1,'expt2b_mROI_n14_spWM_HEfROIs_ProdLoc_typingEFFECT_20201103'),
+                E3_MD_spWM = load(mean_data,"E2","MD","H>E","spWM",0,'expt3_mROI_n11_spWM_HEfROIs_spWM_EFFECT_20201103'),
+                E3_MD_prod = load(mean_data,"E2","MD","H>E","NameRead",0,'expt3_mROI_n11_spWM_HEfROIs_nameread_EFFECT_20201103'),
+                E2_lowlevel_speaking_prodSpoken = load(mean_data,"E1","lowlevel_speaking","NProd>Fix","ProdLoc_spoken",1,'expt2_mROI_n14_ProdLoc_ArticfROIs_ProdLocEFFECT_20201103'),
+                E2_lowlevel_speaking_prodTyped = load(mean_data,"E1","lowlevel_speaking","NProd>Fix","ProdLoc_typed",1,'expt2_mROI_n14_ProdLoc_ArticfROIs_ProdLoc_typingEFFECT_20201103'),
+                E2_lowlevel_typing_prodSpoken = load(mean_data, "E3","lowlevel_typing","NProd>Fix","ProdLoc_spoken",1,'expt2_mROI_n14_ProdLoc_typing_ArticfROIs_ProdLocEFFECT_20201103'),
+                E2_lowlevel_typing_prodTyped = load(mean_data, "E3","lowlevel_typing","NProd>Fix","ProdLoc_typed",1,'expt2_mROI_n14_ProdLoctyp_ArticfROIs_ProdLoctypEFFECT_20201103')
 )
 #2022-07-08 -HS editing for the reframing of the paper (reorganizing the experiments)
 
 #individual, not mean data
 mean_data = FALSE;
 all_dfs_indiv <- list(
-  E1_lang_lang = load(mean_data,"E1","lang","S>N","langloc",'expt1_mROI_n15_langlocSNfROIs_langloc_wo_typingEFFECT_20201103'),
-  E1_lang_prod = load(mean_data,"E1","lang","S>N","ProdLoc_spoken",'expt1_mROI_n15_langlocSNfROIs_ProdLoc_wo_typing_EFFECT_20201103'),
-  E2_lang_lang = load(mean_data,"E1","lang","S>N","langloc",'expt2_mROI_n14_langlocSNfROIs_langloc_w_typingEFFECT_20201103'),
-  E2_lang_prod = load(mean_data,"E1","lang","S>N","ProdLoc_spoken",'expt2a_mROI_n14_langlocSNfROIs_ProdLoc_w_typingEFFECT_20201103'),
-  E2_lang_prod = load(mean_data,"E3","lang","S>N","ProdLoc_typed",'expt2b_mROI_n14_langlocSNfROIs_ProdLoc_typingEFFECT_20201103'),
-  E3_lang_lang = load(mean_data,"E2","lang","S>N","langloc",'expt3_mROI_n12_lang_fROIs_lang_EFFECT_20201103'),
-  E3_lang_prod = load(mean_data,"E2","lang","S>N","NameRead",'expt3_mROI_n12_lang_fROIs_nameread_EFFECT_20201103'),
-  E1_MD_spWM = load(mean_data,"E1","MD","H>E","spWM",'expt1_mROI_n14_spWM_HEfROIs_spWM_wo_typing_EFFECT_20201103'),
-  E1_MD_prod = load(mean_data,"E1","MD","H>E","ProdLoc_spoken",'expt1_mROI_n14_spWM_HEfROIs_ProdLoc_wo_typing_EFFECT_20201103'),
-  E2_MD_spWM = load(mean_data,"E1", "MD","H>E","spWM", 'expt2_mROI_n14_spWM_HEfROIs_spWM_w_typingEFFECT_20201103' ),
-  E2_MD_prod = load(mean_data,"E1","MD","H>E","ProdLoc_spoken", 'expt2a_mROI_n14_spWM_HEfROIs_ProdLoc_w_typingEFFECT_20201103'),
-  E2_MD_prod = load(mean_data,"E3","MD","H>E","ProdLoc_typed",'expt2b_mROI_n14_spWM_HEfROIs_ProdLoc_typingEFFECT_20201103'),
-  E3_MD_spWM = load(mean_data,"E2","MD","H>E","spWM",'expt3_mROI_n11_spWM_HEfROIs_spWM_EFFECT_20201103'),
-  E3_MD_prod = load(mean_data,"E2","MD","H>E","NameRead",'expt3_mROI_n11_spWM_HEfROIs_nameread_EFFECT_20201103'),
-  E2_lowlevel_speaking_prodSpoken = load(mean_data,"E1","lowlevel_speaking","NProd>Fix","ProdLoc_spoken",'expt2_mROI_n14_ProdLoc_ArticfROIs_ProdLocEFFECT_20201103'),
-  E2_lowlevel_speaking_prodTyped = load(mean_data,"E1","lowlevel_speaking","NProd>Fix","ProdLoc_typed",'expt2_mROI_n14_ProdLoc_ArticfROIs_ProdLoc_typingEFFECT_20201103'),
-  E2_lowlevel_typing_prodSpoken = load(mean_data, "E3","lowlevel_typing","NProd>Fix","ProdLoc_spoken",'expt2_mROI_n14_ProdLoc_typing_ArticfROIs_ProdLocEFFECT_20201103'),
-  E2_lowlevel_typing_prodTyped = load(mean_data, "E3","lowlevel_typing","NProd>Fix","ProdLoc_typed",'expt2_mROI_n14_ProdLoctyp_ArticfROIs_ProdLoctypEFFECT_20201103')
+  E1_lang_lang = load(mean_data,"E1","lang","S>N","langloc",0,'expt1_mROI_n15_langlocSNfROIs_langloc_wo_typingEFFECT_20201103'),
+  E1_lang_prod = load(mean_data,"E1","lang","S>N","ProdLoc_spoken",0,'expt1_mROI_n15_langlocSNfROIs_ProdLoc_wo_typing_EFFECT_20201103'),
+  E2_lang_lang = load(mean_data,"E1","lang","S>N","langloc",0,'expt2_mROI_n14_langlocSNfROIs_langloc_w_typingEFFECT_20201103'),
+  E2_lang_prod = load(mean_data,"E1","lang","S>N","ProdLoc_spoken",1,'expt2a_mROI_n14_langlocSNfROIs_ProdLoc_w_typingEFFECT_20201103'),
+  E2_lang_prod = load(mean_data,"E3","lang","S>N","ProdLoc_typed",1,'expt2b_mROI_n14_langlocSNfROIs_ProdLoc_typingEFFECT_20201103'),
+  E3_lang_lang = load(mean_data,"E2","lang","S>N","langloc",0,'expt3_mROI_n12_lang_fROIs_lang_EFFECT_20201103'),
+  E3_lang_prod = load(mean_data,"E2","lang","S>N","NameRead",0,'expt3_mROI_n12_lang_fROIs_nameread_EFFECT_20201103'),
+  E1_MD_spWM = load(mean_data,"E1","MD","H>E","spWM",0,'expt1_mROI_n14_spWM_HEfROIs_spWM_wo_typing_EFFECT_20201103'),
+  E1_MD_prod = load(mean_data,"E1","MD","H>E","ProdLoc_spoken",0,'expt1_mROI_n14_spWM_HEfROIs_ProdLoc_wo_typing_EFFECT_20201103'),
+  E2_MD_spWM = load(mean_data,"E1", "MD","H>E","spWM",1, 'expt2_mROI_n14_spWM_HEfROIs_spWM_w_typingEFFECT_20201103' ),
+  E2_MD_prod = load(mean_data,"E1","MD","H>E","ProdLoc_spoken",1,'expt2a_mROI_n14_spWM_HEfROIs_ProdLoc_w_typingEFFECT_20201103'),
+  E2_MD_prod = load(mean_data,"E3","MD","H>E","ProdLoc_typed",1,'expt2b_mROI_n14_spWM_HEfROIs_ProdLoc_typingEFFECT_20201103'),
+  E3_MD_spWM = load(mean_data,"E2","MD","H>E","spWM",0,'expt3_mROI_n11_spWM_HEfROIs_spWM_EFFECT_20201103'),
+  E3_MD_prod = load(mean_data,"E2","MD","H>E","NameRead",0,'expt3_mROI_n11_spWM_HEfROIs_nameread_EFFECT_20201103'),
+  E2_lowlevel_speaking_prodSpoken = load(mean_data,"E1","lowlevel_speaking","NProd>Fix","ProdLoc_spoken",1,'expt2_mROI_n14_ProdLoc_ArticfROIs_ProdLocEFFECT_20201103'),
+  E2_lowlevel_speaking_prodTyped = load(mean_data,"E1","lowlevel_speaking","NProd>Fix","ProdLoc_typed",1,'expt2_mROI_n14_ProdLoc_ArticfROIs_ProdLoc_typingEFFECT_20201103'),
+  E2_lowlevel_typing_prodSpoken = load(mean_data, "E3","lowlevel_typing","NProd>Fix","ProdLoc_spoken",1,'expt2_mROI_n14_ProdLoc_typing_ArticfROIs_ProdLocEFFECT_20201103'),
+  E2_lowlevel_typing_prodTyped = load(mean_data, "E3","lowlevel_typing","NProd>Fix","ProdLoc_typed",1,'expt2_mROI_n14_ProdLoctyp_ArticfROIs_ProdLoctypEFFECT_20201103')
 )
 
 big_data_mean = dplyr::bind_rows(all_dfs_mean)
