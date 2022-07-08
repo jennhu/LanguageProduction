@@ -71,7 +71,7 @@ mean_data = TRUE
 all_dfs_mean <- list(
                 E1_lang_lang = load(mean_data,"E1","lang","S>N","langloc",0,'expt1_mROI_n15_langlocSNfROIs_langloc_wo_typingEFFECT_20201103'),
                 E1_lang_prod = load(mean_data,"E1","lang","S>N","ProdLoc_spoken",0,'expt1_mROI_n15_langlocSNfROIs_ProdLoc_wo_typing_EFFECT_20201103'),
-                E2_lang_lang = load(mean_data,"E1","lang","S>N","langloc",0,'expt2_mROI_n14_langlocSNfROIs_langloc_w_typingEFFECT_20201103'),
+                E2_lang_lang = load(mean_data,"E1","lang","S>N","langloc",1,'expt2_mROI_n14_langlocSNfROIs_langloc_w_typingEFFECT_20201103'),
                 E2_lang_prod = load(mean_data,"E1","lang","S>N","ProdLoc_spoken",1,'expt2a_mROI_n14_langlocSNfROIs_ProdLoc_w_typingEFFECT_20201103'),
                 E2_lang_prod = load(mean_data,"E3","lang","S>N","ProdLoc_typed",1,'expt2b_mROI_n14_langlocSNfROIs_ProdLoc_typingEFFECT_20201103'),
                 E3_lang_lang = load(mean_data,"E2","lang","S>N","langloc",0,'expt3_mROI_n12_lang_fROIs_lang_EFFECT_20201103'),
@@ -95,7 +95,7 @@ mean_data = FALSE;
 all_dfs_indiv <- list(
   E1_lang_lang = load(mean_data,"E1","lang","S>N","langloc",0,'expt1_mROI_n15_langlocSNfROIs_langloc_wo_typingEFFECT_20201103'),
   E1_lang_prod = load(mean_data,"E1","lang","S>N","ProdLoc_spoken",0,'expt1_mROI_n15_langlocSNfROIs_ProdLoc_wo_typing_EFFECT_20201103'),
-  E2_lang_lang = load(mean_data,"E1","lang","S>N","langloc",0,'expt2_mROI_n14_langlocSNfROIs_langloc_w_typingEFFECT_20201103'),
+  E2_lang_lang = load(mean_data,"E1","lang","S>N","langloc",1,'expt2_mROI_n14_langlocSNfROIs_langloc_w_typingEFFECT_20201103'),
   E2_lang_prod = load(mean_data,"E1","lang","S>N","ProdLoc_spoken",1,'expt2a_mROI_n14_langlocSNfROIs_ProdLoc_w_typingEFFECT_20201103'),
   E2_lang_prod = load(mean_data,"E3","lang","S>N","ProdLoc_typed",1,'expt2b_mROI_n14_langlocSNfROIs_ProdLoc_typingEFFECT_20201103'),
   E3_lang_lang = load(mean_data,"E2","lang","S>N","langloc",0,'expt3_mROI_n12_lang_fROIs_lang_EFFECT_20201103'),
