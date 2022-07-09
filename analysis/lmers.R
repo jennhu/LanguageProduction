@@ -15,11 +15,6 @@ fROI_str <- list(lang="1-6", MD="1-20")
 
 # Load all data from experiments 1, 2, 3
 all_data <- read.csv("../data/fMRI_all_indiv_production_data.csv")
-# Do some experiment reordering/renaming.
-# all_data$Expt <- revalue(
-#   all_data$Expt, 
-#   c("E2a"="E1", "E2b"="E3", "E3"="E2")
-# )
 lang_data <- filter(all_data, Network=="lang" & ROI %in% fROIs$lang)
 MD_data <- filter(all_data, Network=="MD" & ROI %in% fROIs$MD)
 
@@ -27,11 +22,13 @@ MD_data <- filter(all_data, Network=="MD" & ROI %in% fROIs$MD)
 dfs_lang <- list(
   expt1_prod=filter(lang_data, Expt=="E1" & CriticalTask=="ProdLoc_spoken"),
   expt1_langloc=filter(lang_data, Expt=="E1" & CriticalTask=="langloc"),
-  expt1_prod_speakANDtype = filter(lang_data, Expt=="E1" & CriticalTask=="ProdLoc_spoken" & Speak_and_type==1),
-  expt2_prod=filter(lang_data, Expt=="E2" & CriticalTask=="NameRead"), # new Exp2 = old Exp3
-  expt2_langloc=filter(lang_data, Expt=="E2" & CriticalTask=="langloc"), # new Exp2 = old Exp3
+  # needed for within-subject comparison of spoken and typed production
+  expt1_prod_speakANDtype=filter(lang_data, Expt=="E1" & CriticalTask=="ProdLoc_spoken" & Speak_and_type==1),
+  expt2_prod=filter(lang_data, Expt=="E2" & CriticalTask=="NameRead"),
+  expt2_langloc=filter(lang_data, Expt=="E2" & CriticalTask=="langloc"),
   expt3_prod=filter(lang_data, Expt=="E3" & CriticalTask=="ProdLoc_typed"),
-  expt3_langloc=filter(lang_data, Expt=="E1" & CriticalTask=="langloc" & Speak_and_type==1) # NOTE: same as old 2a langloc
+  # same subjects as those in Expt 1 who did both spoken and typed tasks
+  expt3_langloc=filter(lang_data, Expt=="E1" & CriticalTask=="langloc" & Speak_and_type==1)
 )
 
 # Replace *Prod with *Prod_typed in typing experiment (3) for easy analysis.
@@ -227,12 +224,12 @@ validate_fROIs <- function(loc_data, cond1_name, cond2_name, network) {
 }
 
 # sentences vs. nonwords (langloc) ----- 
-langloc_data <- dfs_lang[names(dfs_lang) %in% c("expt1_langloc", "expt2_langloc")] # new 3 already included in 1
+langloc_data <- dfs_lang[names(dfs_lang) %in% c("expt1_langloc", "expt2_langloc")] # expt 3 already included in 1
 langloc_data <- bind_rows(langloc_data)
 lang_sepfROI_results <- validate_fROIs(langloc_data, "S", "N", "lang")
 
 # hard vs. easy spatial working memory (MD) ----
-md_data <- dfs_MD_loc[names(dfs_MD_loc) %in% c("expt1_MD_loc", "expt2_MD_loc")] # new 3 already included in 1
+md_data <- dfs_MD_loc[names(dfs_MD_loc) %in% c("expt1_MD_loc", "expt2_MD_loc")] # expt 3 already included in 1
 md_data <- bind_rows(md_data)
 md_sepfROI_results <- validate_fROIs(md_data, "H", "E", "MD")
 
