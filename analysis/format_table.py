@@ -274,7 +274,7 @@ def make_table(q, **kwargs):
 
 # Generate tables for lang network analyses.
 for q in ["Q1", "Q2", "Q3", "Q3-control"]:
-    table = make_table(q)
+    table = make_table(q, network="lang" if q != "Q3-control" else "MD")
     with open(f"tables/{q_to_table[q]}.tex", "w") as f:
         f.write(table)
 
