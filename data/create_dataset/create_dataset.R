@@ -127,7 +127,7 @@ all_dfs_indiv <- list(
   E1_production_lang = load(mean_data, "E1","production","SProd>SCompANDSProd>WProd","langloc",0,'expt1_mROI_n15_ProdLoc_ROIs_langlocSNEFFECT_20220711_RESULTS'),
   E1_production_MD = load(mean_data, "E1","production","SProd>SCompANDSProd>WProd","spWM",0,'expt1_mROI_n15_ProdLoc_ROIs_spatialFINEFFECT_20220711_RESULTS'),
   E2a_production_prod = load(mean_data, "E1","production","SProd>SCompANDSProd>WProd","ProdLoc_spoken",1,'expt2_mROI_n14_ProdLoc_ROIs_ProdLocEFFECT_20220711_RESULTS'),
-  E2b_production_prod = load(mean_data, "E3","production","SProd>SCompANDSProd>WProd","ProdLoc_typing",1,'expt2_mROI_n14_ProdLoc_ROIs_ProdLoc_typingEFFECT_20220711_RESULTS'),
+  E2b_production_prod = load(mean_data, "E3","production","SProd>SCompANDSProd>WProd","ProdLoc_typed",1,'expt2_mROI_n14_ProdLoc_ROIs_ProdLoc_typingEFFECT_20220711_RESULTS'),
   E2_production_lang = load(mean_data, "E1","production","SProd>SCompANDSProd>WProd","langloc",1,'expt2_mROI_n14_ProdLoc_ROIs_langlocSNEFFECT_20220711_RESULTS'),
   E2_production_MD = load(mean_data, "E1","production","SProd>SCompANDSProd>WProd","spWM",1,'expt2_mROI_n14_ProdLoc_ROIs_spatialFINEFFECT_20220711_RESULTS')
 )
