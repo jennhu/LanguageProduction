@@ -1,0 +1,4 @@
+expt_data,ROI,network,effect,p_value,cohen_d
+expt1_prod,1-6,lang,TaskType,1.2526597480888999e-12,0.5640767307715718
+expt1_prod,1-6,lang,StimType,0.018904426068657578,0.1833370014375932
+expt1_prod,1-6,lang,TaskType:StimType,0.08116697842460376,0.13607829796432927

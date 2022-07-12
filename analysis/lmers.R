@@ -237,31 +237,42 @@ write_csv(lang_sepfROI_results, "results/validation_lang.csv")
 write_csv(md_sepfROI_results, "results/validation_md.csv")
 
 ################################################################################
+# TABLE 1
 # Q1: Does sentence production elicit a response in the language network?
 ################################################################################
 
 #data: Expt1, 2 production & Expt1, 2 langloc
-Q1_network_results <- initialize_tbl("network")
-Q1_sepfROI_results <- initialize_tbl("separate_fROIs")
+t1_network_results <- initialize_tbl("network")
+t1_sepfROI_results <- initialize_tbl("separate_fROIs")
 
 # SProd vs. fixation ----
 cond1_name = "SProd"; cond2_name = "fixation"
-for (expt in c("expt1", "expt2")) {
+for (expt in c("expt1")) {
   cond1_src = paste(expt, "prod", sep="_")
   cond2_src = paste(expt, "prod", sep="_")
   result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name)
-  Q1_network_results <- add_row(Q1_network_results, result$network)
-  Q1_sepfROI_results <- bind_rows(Q1_sepfROI_results, result$separate_fROIs)
+  t1_network_results <- add_row(t1_network_results, result$network)
+  t1_sepfROI_results <- bind_rows(t1_sepfROI_results, result$separate_fROIs)
 }
 
 # SProd vs. nonwords (langloc) ----- 
 cond1_name = "SProd"; cond2_name = "N"
-for (expt in c("expt1", "expt2")) {
+for (expt in c("expt1")) {
   cond1_src = paste(expt, "prod", sep="_")
   cond2_src = paste(expt, "langloc", sep="_")
   result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name)
-  Q1_network_results <- add_row(Q1_network_results, result$network)
-  Q1_sepfROI_results <- bind_rows(Q1_sepfROI_results, result$separate_fROIs)
+  t1_network_results <- add_row(t1_network_results, result$network)
+  t1_sepfROI_results <- bind_rows(t1_sepfROI_results, result$separate_fROIs)
+}
+
+# SProd vs. NProd ------ 
+cond1_name = "SProd"; cond2_name = "NProd"
+for (expt in c("expt1")) {
+  cond1_src = paste(expt, "prod", sep="_")
+  cond2_src = paste(expt, "prod", sep="_")
+  result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name)
+  t1_network_results <- add_row(t1_network_results, result$network)
+  t1_sepfROI_results <- bind_rows(t1_sepfROI_results, result$separate_fROIs)
 }
 
 # SProd vs. VisEvSem ------ 
@@ -270,9 +281,195 @@ for (expt in c("expt1")) {
   cond1_src = paste(expt, "prod", sep="_")
   cond2_src = paste(expt, "prod", sep="_")
   result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name)
-  Q1_network_results <- add_row(Q1_network_results, result$network)
-  Q1_sepfROI_results <- bind_rows(Q1_sepfROI_results, result$separate_fROIs)
+  t1_network_results <- add_row(t1_network_results, result$network)
+  t1_sepfROI_results <- bind_rows(t1_sepfROI_results, result$separate_fROIs)
 }
+
+write_csv(t1_network_results, "results/table1_network.csv")
+write_csv(t1_sepfROI_results, "results/table1_sepfROIs.csv")
+
+################################################################################
+# TABLE 2
+# Q2: Does the language network respond to both lexical access 
+#     and syntactic encoding?
+################################################################################
+
+# data: Expt1, 3 production, Expt 2
+t2_network_results <- initialize_tbl("network")
+t2_sepfROI_results <- initialize_tbl("separate_fROIs")
+
+# SProd vs. WProd ----
+for (expt in c("expt1", "expt2", "expt3")) {
+  cond1_src = paste(expt, "prod", sep="_")
+  cond2_src = paste(expt, "prod", sep="_")
+  if (expt=="expt3") {
+    cond1_name = "SProd_typed"; cond2_name = "WProd_typed"
+  }
+  else {
+    cond1_name = "SProd"; cond2_name = "WProd"
+  }
+  result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name)
+  t2_network_results <- add_row(t2_network_results, result$network)
+  t2_sepfROI_results <- bind_rows(t2_sepfROI_results, result$separate_fROIs)
+}
+
+# WProd vs NProd ----
+for (expt in c("expt1", "expt3")) {
+  cond1_src = paste(expt, "prod", sep="_")
+  cond2_src = paste(expt, "prod", sep="_")
+  if (expt=="expt3") {
+    cond1_name = "WProd_typed"; cond2_name = "NProd_typed"
+  }
+  else {
+    cond1_name = "WProd"; cond2_name = "NProd"
+  }
+  result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name)
+  t2_network_results <- add_row(t2_network_results, result$network)
+  t2_sepfROI_results <- bind_rows(t2_sepfROI_results, result$separate_fROIs)
+}
+
+write_csv(t2_network_results, "results/table2_network.csv")
+write_csv(t2_sepfROI_results, "results/table2_sepfROIs.csv")
+
+################################################################################
+# TABLE 3
+# Q3: Do any brain regions selectively support phrase-structure building 
+#     during language production relative to comprehension?
+################################################################################
+
+initialize_tbl_v2 <- function(model_type) {
+  if (model_type == "network") {
+    t <- tibble(expt_data=character(), ROI=character(),
+                network=character(), effect=character(), p_value=double(),
+                cohen_d=double())
+  }
+  else if (model_type == "separate_fROIs") {
+    t <- tibble(expt_data=character(), ROI=integer(), effect=character(),
+                p_value_uncorrected=double(), p_value_fdr_corrected=double(),
+                cohen_d=double())
+  }
+  else {
+    stop("model_type should be `network` or `separate_fROIs`")
+  }
+  return(t)
+}
+
+# data: Expt1
+t3_network_results <- initialize_tbl_v2("network")
+t3_sepfROI_results <- initialize_tbl_v2("separate_fROIs")
+
+fit_model_v2 <- function(model_data, model_type, plot=FALSE, network="lang") {
+  model_data$TaskType <- ifelse(model_data$Effect %in% c("SProd", "WProd"), 1, 0) # 1 = prod, 0 = comp
+  model_data$StimType <- ifelse(model_data$Effect %in% c("SProd", "SComp"), 1, 0) # 1 = S, 0 = W
+  if (model_type == "network") {
+    mixed.lmer <- lmer(EffectSize ~ TaskType + StimType + TaskType*StimType + (1|ROI) + (1|Subject), data=model_data)
+  }
+  else if (model_type == "separate_fROIs") {
+    mixed.lmer <- lmer(EffectSize ~ TaskType + StimType + TaskType*StimType + (1|Subject), data=model_data)
+  }
+  else {
+    stop("model_type should be `network` or `separate_fROIs`")
+  }
+  summary <- summary(mixed.lmer)
+  p_value_idx <- 5
+  coeffs <- summary$coefficients
+  cohen_d <- lme.dscore(mixed.lmer, model_data, type="lme4")$d
+  
+  if (plot) {
+    plot(mixed.lmer)
+    qqnorm(resid(mixed.lmer))
+    qqline(resid(mixed.lmer))
+  }
+  
+  rows <- bind_rows(
+    tibble_row(
+      expt_data=src,
+      ROI=fROI_str[[network]], network=network, 
+      effect="TaskType", p_value=coeffs[2,5], cohen_d=cohen_d[1]
+    ),
+    tibble_row(
+      expt_data=src,
+      ROI=fROI_str[[network]], network=network, 
+      effect="StimType", p_value=coeffs[3,5], cohen_d=cohen_d[2]
+    ),
+    tibble_row(
+      expt_data=src,
+      ROI=fROI_str[[network]], network=network, 
+      effect="TaskType:StimType", p_value=coeffs[4,5], cohen_d=cohen_d[3]
+    )
+  )
+  return(rows)
+}
+
+run_network_model_v2 <- function(src, conds=c("SProd", "WProd", "SComp", "WComp"), network="lang") {
+  model_data <- filter(dfs[[src]], Effect %in% conds)
+  rows <- fit_model_v2(model_data, "network")
+  return(rows)
+}
+
+run_separate_fROIs_model_v2 <- function(src, conds=c("SProd", "WProd", "SComp", "WComp"), network="lang") {
+  raw_p_values <- list()
+  effect_sizes <- list()
+  all_rois <- list()
+  all_effects <- list()
+  for (fROI in fROIs[[network]]) {
+    model_data <- filter(dfs[[src]], Effect %in% conds & ROI==fROI)
+
+    fit <- fit_model_v2(model_data, "separate_fROIs")
+    raw_p_values <- append(raw_p_values, fit$p_value)
+    effect_sizes <- append(effect_sizes, fit$cohen_d)
+    all_rois <- append(all_rois, c(fROI, fROI, fROI))
+    all_effects <- append(all_effects, c("TaskType", "StimType", "TaskType:StimType"))
+  }
+  #FDR-correction
+  adjusted_p_values <- p.adjust(raw_p_values, method="fdr")
+  print(adjusted_p_values)
+  rows <- tibble(
+    expt_data=src,
+    ROI=unlist(all_rois),
+    effect=unlist(all_effects),
+    p_value_uncorrected=unlist(raw_p_values),
+    p_value_fdr_corrected=adjusted_p_values,
+    cohen_d=unlist(effect_sizes)
+  )
+  return(rows)
+}
+
+fit_all_models_v2 <- function(...) {
+  network_rows <- run_network_model_v2(...)
+  separate_fROIs_rows <- run_separate_fROIs_model_v2(...)
+  print(separate_fROIs_rows)
+  result <- list(network=network_rows, separate_fROIs=separate_fROIs_rows)
+  return(result)
+}
+
+# Expt 1 ------ 
+for (expt in c("expt1")) {
+  src = paste(expt, "prod", sep="_")
+  result <- fit_all_models_v2(src, conds=c("SProd", "WProd", "SComp", "WComp"), network="lang")
+  t3_network_results <- bind_rows(t3_network_results, result$network)
+  t3_sepfROI_results <- bind_rows(t3_sepfROI_results, result$separate_fROIs)
+}
+
+write_csv(t3_network_results, "results/table3_network.csv")
+write_csv(t3_sepfROI_results, "results/table3_sepfROIs.csv")
+
+####################################################################################################
+# SUPPLEMENTARY!
+####################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 ####################################################################################################
 # Q2: Does the language network’s response to sentence production generalize across output modality?
@@ -310,21 +507,6 @@ Q2_sepfROI_results <- bind_rows(Q2_sepfROI_results, result$separate_fROIs)
 Q3_network_results <- initialize_tbl("network")
 Q3_sepfROI_results <- initialize_tbl("separate_fROIs")
 
-# WProd vs NProd ----
-for (expt in c("expt1", "expt3")) {
-  cond1_src = paste(expt, "prod", sep="_")
-  cond2_src = paste(expt, "prod", sep="_")
-  if (expt=="expt3") {
-    cond1_name = "WProd_typed"; cond2_name = "NProd_typed"
-  }
-  else {
-    cond1_name = "WProd"; cond2_name = "NProd"
-  }
-  result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name)
-  Q3_network_results <- add_row(Q3_network_results, result$network)
-  Q3_sepfROI_results <- bind_rows(Q3_sepfROI_results, result$separate_fROIs)
-}
-
 # SProd vs. WProd ----
 for (expt in c("expt1", "expt2", "expt3")) {
   cond1_src = paste(expt, "prod", sep="_")
@@ -334,6 +516,21 @@ for (expt in c("expt1", "expt2", "expt3")) {
   }
   else {
     cond1_name = "SProd"; cond2_name = "WProd"
+  }
+  result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name)
+  Q3_network_results <- add_row(Q3_network_results, result$network)
+  Q3_sepfROI_results <- bind_rows(Q3_sepfROI_results, result$separate_fROIs)
+}
+
+# WProd vs NProd ----
+for (expt in c("expt1", "expt3")) {
+  cond1_src = paste(expt, "prod", sep="_")
+  cond2_src = paste(expt, "prod", sep="_")
+  if (expt=="expt3") {
+    cond1_name = "WProd_typed"; cond2_name = "NProd_typed"
+  }
+  else {
+    cond1_name = "WProd"; cond2_name = "NProd"
   }
   result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name)
   Q3_network_results <- add_row(Q3_network_results, result$network)
@@ -359,14 +556,34 @@ for (expt in c("expt1", "expt2", "expt3")) {
 }
 
 ################################################################################
+# Q random (number as 4 for now): SComp>WComp for Expt 1
+################################################################################
+
+#data: Expt1, 2 production & Expt1, 2 langloc
+Q4_network_results <- initialize_tbl("network")
+Q4_sepfROI_results <- initialize_tbl("separate_fROIs")
+
+# SComp vs. WComp ----
+cond1_name = "SComp"; cond2_name = "WComp"
+for (expt in c("expt1")) {
+  cond1_src = paste(expt, "prod", sep="_")
+  cond2_src = paste(expt, "prod", sep="_")
+  result <- fit_all_models(cond1_src, cond2_src, cond1_name, cond2_name)
+  Q4_network_results <- add_row(Q4_network_results, result$network)
+  Q4_sepfROI_results <- bind_rows(Q4_sepfROI_results, result$separate_fROIs)
+}
+write_csv(Q4_network_results, "results/Q4_network.csv")
+write_csv(Q4_sepfROI_results, "results/Q4_sepfROIs.csv")
+
+################################################################################
 # PROCESSING FINAL RESULTS
 ################################################################################
 
 # Save all resulting tables to CSV files.
-write_csv(Q1_network_results, "results/Q1_network.csv")
+write_csv(t1_network_results, "results/t1_network.csv")
 write_csv(Q2_network_results, "results/Q2_network.csv")
 write_csv(Q3_network_results, "results/Q3_network.csv")
-write_csv(Q1_sepfROI_results, "results/Q1_sepfROIs.csv")
+write_csv(t1_sepfROI_results, "results/t1_sepfROIs.csv")
 write_csv(Q2_sepfROI_results, "results/Q2_sepfROIs.csv")
 write_csv(Q3_sepfROI_results, "results/Q3_sepfROIs.csv")
 
