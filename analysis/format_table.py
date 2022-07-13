@@ -25,9 +25,9 @@ network_names = {
 col_widths = {
     "table1": "14mm", 
     "table2": "15mm", 
-    "table_si2": "17mm",
-    "table_si3": "18mm",
-    "table_si4": "15mm",
+    "table3": "14mm",
+    "si_table1": "20mm",
+    "table4": "14mm", 
 }
 def pretty_cond_name(c):
     if "_" in c:
@@ -59,13 +59,17 @@ def positive(d):
 def negative(d):
     return d < 0
 PREDICTIONS = {
-    # MAIN-TEXT TABLES
     "table1": {
         "Experiment 1": {
             "sig": ["SProd-fixation", "SProd-N", "SProd-NProd", "SProd-VisEvSem"],
             "direction": positive,
             "nonsig": []
-        }
+        },
+        # "Experiment 2": {
+        #     "sig": ["SProd-fixation","SProd-N"],
+        #     "direction": positive,
+        #     "nonsig": []
+        # },
     },
     "table2": {
         "Experiment 1": {
@@ -74,32 +78,7 @@ PREDICTIONS = {
             "nonsig": []
         }
     },
-    # SUPPLEMENTARY TABLES
-    "table_si2": {
-        "Experiment 2": {
-            "sig": ["SProd-fixation","SProd-N"],
-            "direction": positive,
-            "nonsig": []
-        },
-        "Experiment 3": {
-            "sig": ["SProd (typed)-fixation","SProd (typed)-N", "SProd (typed)-WProd (typed)", "SProd (typed)-NProd (typed)", "SProd (typed)-VisEvSem"],
-            "direction": positive,
-            "nonsig": []
-        },
-    },
-    "table_si3": {
-        "Experiment 2": {
-            "sig": ["SProd-WProd"],
-            "direction": positive,
-            "nonsig": []
-        },
-        "Experiment 3": {
-            "sig": ["SProd (typed)-WProd (typed)", "WProd (typed)-NProd (typed)"],
-            "direction": positive,
-            "nonsig": []
-        }
-    },
-    "table_si4": {
+    "table3": {
         "Experiment 1": {
             "sig": ["TaskType", "StimType"],
             "direction": positive,
@@ -178,7 +157,7 @@ dfs = {
     table : {
         "sepfROIs": process(f"results/{table}_sepfROIs.csv", by_expt=True),
         "network": process(f"results/{table}_network.csv", by_expt=True)
-    } for table in PREDICTIONS.keys()
+    } for table in ["table1", "table2", "table3"]
 }
 
 ################################################################################
@@ -349,7 +328,7 @@ def make_table(table, **kwargs):
     # q_src = q.split("-")[0]
     df, df_network = dfs[table]["sepfROIs"], dfs[table]["network"]
     # Get tabular string, and embed it within a standalone document.
-    fn = tabular_str if table != "table_si4" else tabular_str_v2
+    fn = tabular_str if table != "table3" else tabular_str_v2
     tabular = fn(df, df_network, table, col_width=col_widths[table], **kwargs)
     doc = """\\documentclass[margin=0.1cm]{standalone}
 \\usepackage[utf8]{inputenc}
@@ -373,8 +352,7 @@ def make_table(table, **kwargs):
 ################################################################################
 
 # Generate tables for lang network analyses.
-for table_name in PREDICTIONS.keys(): #["table1", "table2", "table3"]:
-    print(f"Making {table_name}")
+for table_name in ["table1", "table2", "table3"]:
     table_tex = make_table(table_name, network="lang")
     with open(f"tables/{table_name}.tex", "w") as f:
         f.write(table_tex)
