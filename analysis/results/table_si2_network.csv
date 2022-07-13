@@ -1,0 +1,7 @@
+cond1,cond2,expt_data,ROI,network,p_value,cohen_d
+SProd,fixation,expt2_prod/expt2_prod,1-6,lang,5.3694778802991885e-17,1.7312567464667936
+SProd_typed,fixation,expt3_prod/expt3_prod,1-6,lang,4.229265827068016e-9,1.0268891875505848
+SProd,N,expt2_prod/expt2_langloc,1-6,lang,4.842858338890195e-15,1.587388892060426
+SProd_typed,N,expt3_prod/expt3_langloc,1-6,lang,0.0029195078347836385,0.49753883965895435
+SProd_typed,NProd_typed,expt3_prod/expt3_prod,1-6,lang,3.234126448007087e-5,0.7049759200946688
+SProd_typed,VisEvSem,expt3_prod/expt3_prod,1-6,lang,6.035166774363124e-4,0.5762927607528263
