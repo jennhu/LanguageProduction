@@ -1,0 +1,6 @@
+Contrast name:,Group (SProd-SComp)
+Within-subjects contrast matrix:,c[1;1],
+,1.000000,
+Between-subjects contrast matrix:,c[1;1],
+,1.000000,
+Overlap threshold:,0.500000
