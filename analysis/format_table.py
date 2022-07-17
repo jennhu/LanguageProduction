@@ -27,7 +27,7 @@ col_widths = {
     "table2": "15mm", 
     "table_si2": "17mm",
     "table_si3": "18mm",
-    "table_si4": "15mm",
+    "table_si4": "15.7mm",
 }
 def pretty_cond_name(c):
     if "_" in c:
@@ -37,8 +37,8 @@ def pretty_cond_name(c):
         return c
 def pretty_effect_name(e):
     d = {
-        "TaskType": "Prod vs.~Comp",
-        "StimType": "S vs.~W",
+        "TaskType": "Production vs. Comprehension",
+        "StimType": "Sentences vs. Word lists",
         "TaskType:StimType": "Interaction"
     }
     return d[e]
@@ -62,7 +62,7 @@ PREDICTIONS = {
     # MAIN-TEXT TABLES
     "table1": {
         "Experiment 1": {
-            "sig": ["SProd-fixation", "SProd-N", "SProd-NProd", "SProd-VisEvSem"],
+            "sig": ["SProd-fixation", "SProd-Nonwords", "SProd-NProd", "SProd-VisEvSem"],
             "direction": positive,
             "nonsig": []
         }
@@ -77,12 +77,12 @@ PREDICTIONS = {
     # SUPPLEMENTARY TABLES
     "table_si2": {
         "Experiment 2": {
-            "sig": ["SProd-fixation","SProd-N"],
+            "sig": ["SProd-fixation","SProd-Nonwords"],
             "direction": positive,
             "nonsig": []
         },
         "Experiment 3": {
-            "sig": ["SProd (typed)-fixation","SProd (typed)-N", "SProd (typed)-WProd (typed)", "SProd (typed)-NProd (typed)", "SProd (typed)-VisEvSem"],
+            "sig": ["SProd (typed)-fixation","SProd (typed)-Nonwords", "SProd (typed)-WProd (typed)", "SProd (typed)-NProd (typed)", "SProd (typed)-VisEvSem"],
             "direction": positive,
             "nonsig": []
         },
@@ -101,9 +101,11 @@ PREDICTIONS = {
     },
     "table_si4": {
         "Experiment 1": {
-            "sig": ["TaskType", "StimType"],
-            "direction": positive,
-            "nonsig": ["TaskType:StimType"]
+            "sig": [],
+            "nonsig": [] #"TaskType", "StimType", "TaskType:StimType"]
+            # "sig": ["TaskType", "StimType"],
+            # "direction": positive,
+            # "nonsig": ["TaskType:StimType"]
         },
     },
     # "table3": {
