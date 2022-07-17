@@ -14,7 +14,7 @@ load <- function(mean_data, expt_id, network_id, localizer_contrast, task, speak
   }
   
   #recoding some conditions
-  data$Effect <- revalue(data$Effect, c("Artic"="NProd", "EvSem"="VisEvSem", "NEv"="SProd", "NOb"="WProd"))
+  data$Effect <- revalue(data$Effect, c("Artic"="NProd", "EvSem"="VisEvSem", "NEv"="SProd", "NOb"="WProd", "S"="Sentences","N"="Nonwords","H"="Hard WM","E"="Easy WM"))
   data <- data %>% subset(!(data$Effect == "ROb" | data$Effect == "REv")) #take out these conditions, we don't use them
   #add ROI names to the data
   if(network_id == "lang"){

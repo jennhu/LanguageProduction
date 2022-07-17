@@ -86,7 +86,7 @@ for (ind in 1:length(dfs)) {
   
   #reorder levels of Effects
   #dfs[[name]]$Effect = factor(dfs[[name]]$Effect, levels=c("S","SProd","SProd_typed","WProd","WProd_typed","NProd","NProd_typed","N","SComp","WComp","VisEvSem","H","E","fixation"),ordered = TRUE)
-  dfs[[name]]$Effect = factor(dfs[[name]]$Effect, levels=c("fixation","E","H","VisEvSem","WComp","SComp","N","NProd_typed","NProd","WProd_typed","WProd","SProd_typed","SProd","S"),ordered = TRUE)
+  dfs[[name]]$Effect = factor(dfs[[name]]$Effect, levels=c("fixation","Easy WM","Hard WM","VisEvSem","WComp","SComp","Nonwords","NProd_typed","NProd","WProd_typed","WProd","SProd_typed","SProd","Sentences"),ordered = TRUE)
   
   print(levels(dfs[[name]]$Effect))
 }
@@ -339,12 +339,12 @@ validate_fROIs <- function(loc_data, cond1_name, cond2_name, network) {
 # sentences vs. nonwords (langloc) ----- 
 langloc_data <- dfs_lang[names(dfs_lang) %in% c("expt1_langloc", "expt2_langloc")] # new 3 already included in 1
 langloc_data <- bind_rows(langloc_data)
-lang_sepfROI_results <- validate_fROIs(langloc_data, "S", "N", "lang")
+lang_sepfROI_results <- validate_fROIs(langloc_data, "Sentences", "Nonwords", "lang")
 
 # hard vs. easy spatial working memory (MD) ----
 md_data <- dfs_MD_loc[names(dfs_MD_loc) %in% c("expt1_MD_loc", "expt2_MD_loc")] # new 3 already included in 1
 md_data <- bind_rows(md_data)
-md_sepfROI_results <- validate_fROIs(md_data, "H", "E", "MD")
+md_sepfROI_results <- validate_fROIs(md_data, "Hard WM", "Easy WM", "MD")
 
 write_csv(lang_sepfROI_results, "results/validation_lang.csv")
 write_csv(md_sepfROI_results, "results/validation_md.csv")
@@ -368,7 +368,7 @@ for (expt in c("expt1", "expt2")) {
 }
 
 # SProd vs. nonwords (langloc) ----- 
-cond1_name = "SProd"; cond2_name = "N"
+cond1_name = "SProd"; cond2_name = "Nonwords"
 for (expt in c("expt1", "expt2")) {
   cond1_src = paste(expt, "prod", sep="_")
   cond2_src = paste(expt, "langloc", sep="_")
@@ -401,7 +401,7 @@ Q2_network_results <- add_row(Q2_network_results, result$network)
 Q2_sepfROI_results <- bind_rows(Q2_sepfROI_results, result$separate_fROIs)
 
 # SProd_typed vs nonwords (langloc) ----
-result <- fit_all_models("expt3_prod", "expt3_langloc", "SProd_typed", "N")
+result <- fit_all_models("expt3_prod", "expt3_langloc", "SProd_typed", "Nonwords")
 Q2_network_results <- add_row(Q2_network_results, result$network)
 Q2_sepfROI_results <- bind_rows(Q2_sepfROI_results, result$separate_fROIs)
 
