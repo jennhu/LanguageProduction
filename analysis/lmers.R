@@ -71,11 +71,10 @@ for (ind in 1:length(dfs)) {
   dfs[[name]]$ROI = factor(dfs[[name]]$ROI)
   
   #reorder levels of Effects
-  #dfs[[name]]$Effect = factor(dfs[[name]]$Effect, levels=c("S","SProd","SProd_typed","WProd","WProd_typed","NProd","NProd_typed","N","SComp","WComp","VisEvSem","H","E","fixation"),ordered = TRUE)
   dfs[[name]]$Effect = factor(dfs[[name]]$Effect, levels=c("fixation","Easy WM","Hard WM","VisEvSem","WComp","SComp","Nonwords","NProd_typed","NProd","WProd_typed","WProd","SProd_typed","SProd","Sentences"),ordered = TRUE)
   
   print(levels(dfs[[name]]$Effect))
-  }
+}
 
 ################################################################################
 # DEFINE LMER MODELS
@@ -238,10 +237,8 @@ write_csv(md_sepfROI_results, "results/validation_md.csv")
 
 ################################################################################
 # TABLE 1
-# Q1: Does sentence production elicit a response in the language network?
 ################################################################################
 
-#data: Expt1, 2 production & Expt1, 2 langloc
 t1_network_results <- initialize_tbl("network")
 t1_sepfROI_results <- initialize_tbl("separate_fROIs")
 
@@ -290,11 +287,8 @@ write_csv(t1_sepfROI_results, "results/table1_sepfROIs.csv")
 
 ################################################################################
 # TABLE 2
-# Q2: Does the language network respond to both lexical access 
-#     and syntactic encoding?
 ################################################################################
 
-# data: Expt1, 3 production, Expt 2
 t2_network_results <- initialize_tbl("network")
 t2_sepfROI_results <- initialize_tbl("separate_fROIs")
 
@@ -331,13 +325,12 @@ for (expt in c("expt1", "expt3")) {
 write_csv(t2_network_results, "results/table2_network.csv")
 write_csv(t2_sepfROI_results, "results/table2_sepfROIs.csv")
 
-####################################################################################################
-# SUPPLEMENTARY!
-####################################################################################################
+################################################################################
+# SUPPLEMENTARY TABLES
+################################################################################
 
 ################################################################################
 # TABLE SI-2
-# Q1: Does sentence production elicit a response in the language network?
 ################################################################################
 
 tsi2_network_results <- initialize_tbl("network")
@@ -406,10 +399,9 @@ for (expt in c("expt3")) {
 write_csv(tsi2_network_results, "results/table_si2_network.csv")
 write_csv(tsi2_sepfROI_results, "results/table_si2_sepfROIs.csv")
     
-####################################################################################################
+################################################################################
 # TABLE SI-3
-# Q: Does the language network respond to both lexical access and syntactic encoding?
-####################################################################################################
+################################################################################
 
 # data: Expt1, 3 production, Expt 2
 tsi3_network_results <- initialize_tbl("network")
@@ -468,10 +460,9 @@ write_csv(tsi3_sepfROI_results, "results/table_si3_sepfROIs.csv")
 
 ################################################################################
 # TABLE SI-4
-# Q: Do any brain regions selectively support phrase-structure building 
-#     during language production relative to comprehension?
 ################################################################################
 
+# Redefine a bunch of functions.
 initialize_tbl_v2 <- function(model_type) {
   if (model_type == "network") {
     t <- tibble(expt_data=character(), ROI=character(),
@@ -489,11 +480,7 @@ initialize_tbl_v2 <- function(model_type) {
   return(t)
 }
 
-# data: Expt1
-tsi4_network_results <- initialize_tbl_v2("network")
-tsi4_sepfROI_results <- initialize_tbl_v2("separate_fROIs")
-
-fit_model_v2 <- function(model_data, model_type, plot=FALSE, network="lang") {
+fit_model_v2 <- function(model_data, model_type, network="lang") {
   model_data$TaskType <- ifelse(model_data$Effect %in% c("SProd", "WProd"), 1, 0) # 1 = prod, 0 = comp
   model_data$StimType <- ifelse(model_data$Effect %in% c("SProd", "SComp"), 1, 0) # 1 = S, 0 = W
   if (model_type == "network") {
@@ -509,12 +496,6 @@ fit_model_v2 <- function(model_data, model_type, plot=FALSE, network="lang") {
   p_value_idx <- 5
   coeffs <- summary$coefficients
   cohen_d <- lme.dscore(mixed.lmer, model_data, type="lme4")$d
-  
-  if (plot) {
-    plot(mixed.lmer)
-    qqnorm(resid(mixed.lmer))
-    qqline(resid(mixed.lmer))
-  }
   
   rows <- bind_rows(
     tibble_row(
@@ -573,10 +554,12 @@ run_separate_fROIs_model_v2 <- function(src, conds=c("SProd", "WProd", "SComp", 
 fit_all_models_v2 <- function(...) {
   network_rows <- run_network_model_v2(...)
   separate_fROIs_rows <- run_separate_fROIs_model_v2(...)
-  print(separate_fROIs_rows)
   result <- list(network=network_rows, separate_fROIs=separate_fROIs_rows)
   return(result)
 }
+
+tsi4_network_results <- initialize_tbl_v2("network")
+tsi4_sepfROI_results <- initialize_tbl_v2("separate_fROIs")
 
 # Expt 1 ------ 
 for (expt in c("expt1")) {
@@ -590,10 +573,9 @@ write_csv(tsi4_network_results, "results/table_si4_network.csv")
 write_csv(tsi4_sepfROI_results, "results/table_si4_sepfROIs.csv")
 
 ####################################################################################################
-# Q2: Does the language network’s response to sentence production generalize across output modality?
+# Other analysis: Generalize across output modality?
 ####################################################################################################
 
-# # data: Expt 1,3 production & Expt1,3 langloc (subjects with both spoken and typed)
 # Q2_network_results <- initialize_tbl("network")
 # Q2_sepfROI_results <- initialize_tbl("separate_fROIs")
 # 
@@ -618,7 +600,7 @@ write_csv(tsi4_sepfROI_results, "results/table_si4_sepfROIs.csv")
 # Q2_sepfROI_results <- bind_rows(Q2_sepfROI_results, result$separate_fROIs)
 
 ################################################################################
-# Q random: SComp>WComp for Expt 1
+# Other analysis: SComp>WComp for Expt 1
 ################################################################################
 
 # #data: Expt1, 2 production & Expt1, 2 langloc
