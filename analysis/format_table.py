@@ -59,7 +59,7 @@ def positive(d):
 def negative(d):
     return d < 0
 PREDICTIONS = {
-    # MAIN-TEXT TABLES
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MAIN-TEXT TABLES
     "table1": {
         "Experiment 1": {
             "sig": ["SProd-fixation", "SProd-Nonwords", "SProd-NProd", "SProd-VisEvSem"],
@@ -74,7 +74,7 @@ PREDICTIONS = {
             "nonsig": []
         }
     },
-    # SUPPLEMENTARY TABLES
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SUPPLEMENTARY TABLES
     "table_si2": {
         "Experiment 2": {
             "sig": ["SProd-fixation","SProd-Nonwords"],
@@ -82,7 +82,9 @@ PREDICTIONS = {
             "nonsig": []
         },
         "Experiment 3": {
-            "sig": ["SProd (typed)-fixation","SProd (typed)-Nonwords", "SProd (typed)-WProd (typed)", "SProd (typed)-NProd (typed)", "SProd (typed)-VisEvSem"],
+            "sig": ["SProd (typed)-fixation","SProd (typed)-Nonwords", 
+                    "SProd (typed)-WProd (typed)", "SProd (typed)-NProd (typed)", 
+                    "SProd (typed)-VisEvSem"],
             "direction": positive,
             "nonsig": []
         },
@@ -102,43 +104,9 @@ PREDICTIONS = {
     "table_si4": {
         "Experiment 1": {
             "sig": [],
-            "nonsig": [] #"TaskType", "StimType", "TaskType:StimType"]
-            # "sig": ["TaskType", "StimType"],
-            # "direction": positive,
-            # "nonsig": ["TaskType:StimType"]
+            "nonsig": []
         },
-    },
-    # "table3": {
-    #     "Experiment 1": {
-    #         "sig": ["SProd-WProd", "WProd-WComp"],
-    #         "direction": negative,
-    #         "nonsig": []
-    #     },
-    #     "Experiment 2": {
-    #         "sig": ["SProd-WProd"],
-    #         "direction": negative,
-    #         "nonsig": []
-    #     },
-    #     "Experiment 3": {
-    #         "sig": ["SProd-WProd"],
-    #         "direction": negative,
-    #         "nonsig": []
-    #     }
-    # },
-    # "table4": {
-    #     "Experiment 1": {
-    #         "sig": ["SComp-WComp"],
-    #         "direction": positive,
-    #         "nonsig": []
-    #     }
-    # }
-    # "si_table1": {
-    #     "Experiment 3": {
-    #         "sig": ["SProd (typed)-fixation","SProd (typed)-N", "SProd (typed)-VisEvSem"],
-    #         "direction": positive,
-    #         "nonsig": ["SProd (typed)-SProd"],
-    #     },
-    # },
+    }
 }
 def format_cell(cell, p, d, table, contrast, expt):
     pred = PREDICTIONS[table][expt]
@@ -200,7 +168,7 @@ def tabular_str(df, df_network, table, network="lang", tab="    ", col_width="14
     row_super = tab
     row_header = tab + "fROI & "
     # Update header strings.
-    expt_names = sorted(PREDICTIONS[table].keys()) #sorted(df.pretty_expt.unique())
+    expt_names = sorted(PREDICTIONS[table].keys())
     for expt in expt_names:
         rows = df[df.pretty_expt==expt]
         contrasts = rows.contrast.unique()
@@ -266,7 +234,8 @@ def tabular_str(df, df_network, table, network="lang", tab="    ", col_width="14
     ])
     return tab_str
 
-def tabular_str_v2(df, df_network, table, network="lang", tab="    ", col_width="14mm"):
+# Slightly modified code for Table SI-4
+def tabular_str_si4(df, df_network, table, network="lang", tab="    ", col_width="14mm"):
     # Filter df depending on network of interest.
     if network == "lang":
         df = df[~df.expt_data.str.contains("MD")]
@@ -279,7 +248,7 @@ def tabular_str_v2(df, df_network, table, network="lang", tab="    ", col_width=
     row_super = tab
     row_header = tab + "fROI & "
     # Update header strings.
-    expt_names = sorted(PREDICTIONS[table].keys()) #sorted(df.pretty_expt.unique())
+    expt_names = sorted(PREDICTIONS[table].keys())
     for expt in expt_names:
         rows = df[df.pretty_expt==expt]
         effects = rows.effect.unique()
@@ -347,11 +316,9 @@ def tabular_str_v2(df, df_network, table, network="lang", tab="    ", col_width=
 
 def make_table(table, **kwargs):
     # Get data corresponding to source for question of interest.
-    # table = q_to_table[q]
-    # q_src = q.split("-")[0]
     df, df_network = dfs[table]["sepfROIs"], dfs[table]["network"]
     # Get tabular string, and embed it within a standalone document.
-    fn = tabular_str if table != "table_si4" else tabular_str_v2
+    fn = tabular_str if table != "table_si4" else tabular_str_si4
     tabular = fn(df, df_network, table, col_width=col_widths[table], **kwargs)
     doc = """\\documentclass[margin=0.1cm]{standalone}
 \\usepackage[utf8]{inputenc}
@@ -374,15 +341,10 @@ def make_table(table, **kwargs):
 # MAKE TABLES
 ################################################################################
 
-# Generate tables for lang network analyses.
-for table_name in PREDICTIONS.keys(): #["table1", "table2", "table3"]:
-    print(f"Making {table_name}")
-    table_tex = make_table(table_name, network="lang")
-    with open(f"tables/{table_name}.tex", "w") as f:
-        f.write(table_tex)
-
-# Separately make table for control MD network analyses.
-# q = "Q3-control"
-# table = make_table(q, network="MD")
-# with open(f"tables/Q4.tex", "w") as f:
-#     f.write(table)
+if __name__ == "__main__":
+    # Generate tables for lang network analyses.
+    for table_name in PREDICTIONS.keys():
+        print(f"Making {table_name}")
+        table_tex = make_table(table_name, network="lang")
+        with open(f"tables/{table_name}.tex", "w") as f:
+            f.write(table_tex)
