@@ -1,6 +1,6 @@
-# Materials for Hu, Small, et al. (2021)
+# Materials for Hu, Small, et al. (2022)
 
-This repository contains scripts and stimuli for the experiments described in the paper ["The language network supports both lexical access and sentence generation during language production"](https://www.biorxiv.org/content/10.1101/2021.09.10.459596v1) (Hu, Small, et al. 2021). This `README` contains information about the design of the experiments, paths to the stimuli, and instructions for running the scripts.
+This repository contains scripts and stimuli for the experiments described in the paper ["Precision fMRI reveals that the language-selective network supports both phrase-structure building and lexical access during language production"](https://www.biorxiv.org/content/10.1101/2021.09.10.459596v1) (Hu, Small, et al. 2022). This `README` contains information about the design of the experiments, paths to the stimuli, and instructions for running the scripts.
 
 Note that the instructions and trial timing information below reflect the *spoken* task in Experiment 1. Please refer to the paper and code comments for information about the *typed* task (Experiment 3). Experiment 2 uses different stimuli and trial durations, and is briefly discussed [here](#experiment-2); please refer to the paper for details.
 
