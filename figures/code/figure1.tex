@@ -1,15 +1,16 @@
 \documentclass[tikz,border=5pt]{standalone}
 \usetikzlibrary{shapes.misc}
 \usetikzlibrary{positioning}
+\usepackage{fontspec}
 
 \begin{document}
 \begin{tikzpicture}[
-    box/.style={rectangle, draw=black, thick, minimum height=3cm, minimum width=4cm},
+    box/.style={rectangle, draw=black, line width=1pt, minimum height=2.7cm, minimum width=3.9cm, rounded corners},
 ]
-\fontfamily{phv}
+\setmainfont{Arial}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Experiments 1, 2
+% Experiment 1 and 3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % SProd
@@ -17,7 +18,7 @@
     \node[box] (sprod-fix) {\Huge +}; 
     \node[below=0.2cm of sprod-fix] {200 ms};
     \node[anchor=south west] (sprod-label) at (sprod-fix.north west) {\large \textbf{i.\ SProd}};
-    \node[anchor=south west, yshift=0.3cm] at (sprod-label.north west) {\Large a. Experiments 1 \& 2};
+    \node[anchor=south west, yshift=0.3cm] at (sprod-label.north west) {\textbf{\Large a. Experiments 1 (spoken) \& 3 (typed)}};
     
     \node[box] (sprod-stim) [right=0.5cm of sprod-fix] {\includegraphics[height=2.5cm]{sprod.jpg}};
     \node[below=0.2cm of sprod-stim, align=left] {2800 ms (speaking) /\\6800 ms (typing)};
@@ -61,7 +62,7 @@
     \node[below=0.2cm of scomp-fix] {200 ms};
     \node [anchor=south west] at (scomp-fix.north west) {\large \textbf{v.\ SComp}};
     
-    \node[box] (scomp-stim) [right=0.5cm of scomp-fix, align=center] {\bfseries A WOMAN IS\\\bfseries PLAYING THE HARP};
+    \node[box] (scomp-stim) [right=0.5cm of scomp-fix, align=center] {\bfseries THE GIRL IS\\\bfseries SMELLING A FLOWER};
     \node[below=0.2cm of scomp-stim, align=left] {2800 ms};
 \end{scope}
 
@@ -71,12 +72,12 @@
     \node[below=0.2cm of wcomp-fix] {200 ms};
     \node [anchor=south west] at (wcomp-fix.north west) {\large \textbf{vi.\ WComp}};
     
-    \node[box] (wcomp-stim) [right=0.5cm of wcomp-fix, align=center] {\bfseries ARM \, \, DEER \\ \\ \bfseries BUBBLE};
+    \node[box] (wcomp-stim) [right=0.5cm of wcomp-fix, align=center] {\bfseries ACCORDION \\ \\ \bfseries LADDER \\ \\ \bfseries APPLE};
     \node[below=0.2cm of wcomp-stim, align=left] {2800 ms};
 \end{scope}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Experiment 3
+% Experiment 2
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % SProd
@@ -84,7 +85,7 @@
     \node[box] (sprod-3-fix) {\Huge +}; 
     \node[below=0.2cm of sprod-3-fix] {250 ms};
     \node [anchor=south west] (sprod-3-label) at (sprod-3-fix.north west) {\large \textbf{i.\ SProd}};
-    \node[anchor=south west, yshift=0.3cm] at (sprod-3-label.north west) {\Large b. Experiment 3};
+    \node[anchor=south west, yshift=0.3cm] at (sprod-3-label.north west) {\textbf{\Large b. Experiment 2 (spoken)}};
     
     \node[box] (sprod-3-stim) [right=0.5cm of sprod-3-fix] {\includegraphics[height=2.5cm]{sprod-3.png}};
     \node[below=0.2cm of sprod-3-stim, align=left] {3750 ms};

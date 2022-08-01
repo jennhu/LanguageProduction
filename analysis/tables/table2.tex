@@ -1,0 +1,25 @@
+\documentclass[margin=0.1cm]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage{newtxmath}
+\usepackage[table]{xcolor}
+\definecolor{g}{RGB}{197, 217, 191}
+\definecolor{r}{RGB}{238, 196, 196}
+\definecolor{b}{RGB}{196, 227, 238}
+\usepackage{boldline} 
+\usepackage{multirow}
+\begin{document}
+\scriptsize
+\renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{V{3}c|*{2}{p{15mm}}V{3}} \hlineB{3}
+     & \multicolumn{2}{cV{3}}{\textbf{Experiment 1}}\\
+    fROI & SProd vs.\newline WProd & WProd vs.\newline NProd \\\hline
+    \multirow{2}{*}{\textbf{Language network}} & \cellcolor{g}$\mathbf{d=0.499}$\newline$\mathbf{p<0.001}$ & \cellcolor{g}$\mathbf{d=0.325}$\newline$\mathbf{p=0.004}$\\\hline
+    \multirow{2}{*}{IFGorb} & \cellcolor{g}$d=1.852$\newline$p<0.001$ & $d=0.381$\newline$p=0.387$\\
+    \multirow{2}{*}{IFG} & \cellcolor{g}$d=1.029$\newline$p=0.011$ & \cellcolor{g}$d=1.533$\newline$p=0.002$\\
+    \multirow{2}{*}{MFG} & \cellcolor{g}$d=1.068$\newline$p=0.010$ & \cellcolor{g}$d=0.900$\newline$p=0.049$\\
+    \multirow{2}{*}{AntTemp} & \cellcolor{g}$d=1.756$\newline$p<0.001$ & $d=0.304$\newline$p=0.428$\\
+    \multirow{2}{*}{PostTemp} & \cellcolor{g}$d=1.994$\newline$p<0.001$ & $d=0.712$\newline$p=0.105$\\
+    \multirow{2}{*}{AngG} & \cellcolor{g}$d=2.519$\newline$p<0.001$ & \cellcolor{g}$d=1.197$\newline$p=0.011$\\\hlineB{3}
+    \end{tabular}
+\end{document}

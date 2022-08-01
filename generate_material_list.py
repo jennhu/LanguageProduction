@@ -74,7 +74,7 @@ def main():
         print(k, len(v))
 
     df = pd.DataFrame(data, columns=headers)
-    df.to_csv('expt1-2/ProdLoc_materials.csv', index=False)
+    df.to_csv('expt1-3/ProdLoc_materials.csv', index=False)
 
 if __name__ == '__main__':
     main()

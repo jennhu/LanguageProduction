@@ -1,0 +1,25 @@
+\documentclass[margin=0.1cm]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage{newtxmath}
+\usepackage[table]{xcolor}
+\definecolor{g}{RGB}{197, 217, 191}
+\definecolor{r}{RGB}{238, 196, 196}
+\definecolor{b}{RGB}{196, 227, 238}
+\usepackage{boldline} 
+\usepackage{multirow}
+\begin{document}
+\scriptsize
+\renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{V{3}c|*{3}{p{15.7mm}}V{3}} \hlineB{3}
+     & \multicolumn{3}{cV{3}}{\textbf{Experiment 1}}\\
+    fROI & Production vs. Comprehension & Sentences vs. Word lists & Interaction \\\hline
+    \multirow{2}{*}{\textbf{Language network}} & $\mathbf{d=0.564}$\newline$\mathbf{p<0.001}$ & $\mathbf{d=0.183}$\newline$\mathbf{p=0.019}$ & $\mathbf{d=0.136}$\newline$\mathbf{p=0.081}$\\\hline
+    \multirow{2}{*}{IFGorb} & $d=0.977$\newline$p<0.001$ & $d=0.123$\newline$p=0.659$ & $d=0.376$\newline$p=0.159$\\
+    \multirow{2}{*}{IFG} & $d=1.617$\newline$p<0.001$ & $d=0.320$\newline$p=0.240$ & $d=0.119$\newline$p=0.659$\\
+    \multirow{2}{*}{MFG} & $d=1.459$\newline$p<0.001$ & $d=0.270$\newline$p=0.303$ & $d=0.086$\newline$p=0.694$\\
+    \multirow{2}{*}{AntTemp} & $d=0.682$\newline$p=0.011$ & $d=0.478$\newline$p=0.062$ & $d=0.307$\newline$p=0.244$\\
+    \multirow{2}{*}{PostTemp} & $d=0.634$\newline$p=0.017$ & $d=0.508$\newline$p=0.051$ & $d=0.257$\newline$p=0.312$\\
+    \multirow{2}{*}{AngG} & $d=-0.101$\newline$p=0.683$ & $d=0.559$\newline$p=0.036$ & $d=0.507$\newline$p=0.051$\\\hlineB{3}
+    \end{tabular}
+\end{document}

@@ -25,30 +25,33 @@ MD_data <- filter(all_data, Network=="MD" & ROI %in% fROIs$MD)
 dfs_lang <- list(
   expt1_prod=filter(lang_data, Expt=="E1" & CriticalTask=="ProdLoc_spoken"),
   expt1_langloc=filter(lang_data, Expt=="E1" & CriticalTask=="langloc"),
-  expt2a_prod=filter(lang_data, Expt=="E2" & CriticalTask=="ProdLoc_spoken"), 
-  expt2a_langloc=filter(lang_data, Expt=="E2" & CriticalTask=="langloc"), 
-  expt2b_prod=filter(lang_data, Expt=="E2" & CriticalTask=="ProdLoc_typed"), 
-  expt2b_langloc=filter(lang_data, Expt=="E2" & CriticalTask=="langloc"), 
-  expt3_prod=filter(lang_data, Expt=="E3" & CriticalTask=="NameRead"), 
-  expt3_langloc=filter(lang_data, Expt=="E3" & CriticalTask=="langloc")
-)
-
-# Replace *Prod with *Prod_typed in typing experiment (2b) for easy analysis.
-dfs_lang$expt2b_prod$Effect <- revalue(
-  dfs_lang$expt2b_prod$Effect, 
+  expt1_prod_speakANDtype = filter(lang_data, Expt=="E1" & CriticalTask=="ProdLoc_spoken" & Speak_and_type==1),
+  expt2_prod=filter(lang_data, Expt=="E2" & CriticalTask=="NameRead"), # new Exp2 = old Exp3
+  expt2_langloc=filter(lang_data, Expt=="E2" & CriticalTask=="langloc"), # new Exp2 = old Exp3
+  expt3_prod=filter(lang_data, Expt=="E3" & CriticalTask=="ProdLoc_typed"),
+  expt3_langloc=filter(lang_data, Expt=="E1" & CriticalTask=="langloc" & Speak_and_type==1) # NOTE: same as old 2a langloc
+)# Replace *Prod with *Prod_typed in typing experiment (3) for easy analysis.
+dfs_lang$expt3_prod$Effect <- revalue(
+  dfs_lang$expt3_prod$Effect, 
   c("SProd"="SProd_typed", "WProd"="WProd_typed", "NProd"="NProd_typed")
 )
 
 # Construct list of dfs for MD network, named by experiment and task.
-dfs_MD <- list(
+dfs_MD_prod <- list(
   expt1_MD_prod=filter(MD_data, Expt=="E1" & CriticalTask=="ProdLoc_spoken"),
-  expt2a_MD_prod=filter(MD_data, Expt=="E2" & CriticalTask=="ProdLoc_spoken"),
-  expt2b_MD_prod=filter(MD_data, Expt=="E2" & CriticalTask=="ProdLoc_typed"),
-  expt3_MD_prod=filter(MD_data, Expt=="E3" & CriticalTask=="NameRead")
+  expt2_MD_prod=filter(MD_data, Expt=="E2" & CriticalTask=="NameRead"),
+  expt3_MD_prod=filter(MD_data, Expt=="E3" & CriticalTask=="ProdLoc_typed")
+)
+
+# Also get MD localizer contrasts for validation analyses.
+dfs_MD_loc <- list(
+  expt1_MD_loc=filter(MD_data, Expt=="E1" & CriticalTask=="spWM"),
+  expt2_MD_loc=filter(MD_data, Expt=="E2" & CriticalTask=="spWM"), 
+  expt3_MD_loc=filter(MD_data, Expt=="E1" & CriticalTask=="spWM" & Speak_and_type==1)
 )
 
 # Combine all data into `dfs`.
-dfs <- c(dfs_lang, dfs_MD)
+dfs <- c(dfs_lang, dfs_MD_prod, dfs_MD_loc)
 names <- names(dfs)
 
 
@@ -78,8 +81,8 @@ options(contrasts = c("contr.sum","contr.poly"))
 
 
 #did not converge in lmers_convergence_tracking.R
-cond1_name = "SProd_typed"; cond1_src = "expt2b_prod"
-cond2_name = "fixation"; cond2_src = "expt2b_prod"
+cond1_name = "SProd_typed"; cond1_src = "expt3_prod"
+cond2_name = "fixation"; cond2_src = "expt3_prod"
 fROI = 4
 cond1 <- filter(dfs[[cond1_src]], Effect==cond1_name & ROI==fROI)
 cond2 <- filter(dfs[[cond2_src]], Effect==cond2_name & ROI==fROI)
@@ -90,12 +93,12 @@ cohen_d <- lme.dscore(mixed.lmer, model_data, type="lme4")
 
 mixed.lmer.all <- allFit(mixed.lmer)
 ss1 <- summary(mixed.lmer.all)
-## all good, all values are the same for the different algorithms
+## all good, all values are the same for the different algorithms (see ss1 and ss2)
 
 
 #did not converge in lmers_convergence_tracking.R
-cond1_name = "SProd_typed"; cond1_src = "expt2b_prod"
-cond2_name = "fixation"; cond2_src = "expt2b_prod"
+cond1_name = "SProd_typed"; cond1_src = "expt3_prod"
+cond2_name = "fixation"; cond2_src = "expt3_prod"
 fROI = 6
 cond1 <- filter(dfs[[cond1_src]], Effect==cond1_name & ROI==fROI)
 cond2 <- filter(dfs[[cond2_src]], Effect==cond2_name & ROI==fROI)
@@ -106,7 +109,7 @@ cohen_d <- lme.dscore(mixed.lmer, model_data, type="lme4")
 
 mixed.lmer.all <- allFit(mixed.lmer)
 ss2 <- summary(mixed.lmer.all)
-## all good, all values are the same for the different algorithms
+## all good, all values are the same for the different algorithms (see ss1 and ss2)
 
     
   

@@ -1,8 +1,8 @@
-# Materials for Hu, Small, et al. (2021)
+# Materials for Hu, Small, et al. (2022)
 
-This repository contains scripts and stimuli for the experiments described in the paper ["The language network supports both lexical access and sentence generation during language production"](https://www.biorxiv.org/content/10.1101/2021.09.10.459596v1) (Hu, Small, et al. 2021). This `README` contains information about the design of the experiments, paths to the stimuli, and instructions for running the scripts.
+This repository contains scripts and stimuli for the experiments described in the paper ["Precision fMRI reveals that the language-selective network supports both phrase-structure building and lexical access during language production"](https://www.biorxiv.org/content/10.1101/2021.09.10.459596v1) (Hu, Small, et al. 2022). This `README` contains information about the design of the experiments, paths to the stimuli, and instructions for running the scripts.
 
-Note that the instructions and trial timing information below reflect the *spoken* task in Experiments 1 & 2a. Please refer to the paper and code comments for information about the *typed* task (Experiment 2b). Experiment 3 is briefly discussed [here](#experiment-3); please refer to the paper for details.
+Note that the instructions and trial timing information below reflect the *spoken* task in Experiment 1. Please refer to the paper and code comments for information about the *typed* task (Experiment 3). Experiment 2 uses different stimuli and trial durations, and is briefly discussed [here](#experiment-2); please refer to the paper for details.
 
 # Table of contents
 - [Experiment design](#experiment-design)
@@ -58,7 +58,7 @@ The stimuli for the conditions can be found at the following paths.
 The stimuli for the SProd, VisEvSem, and SComp conditions are **event-based**, and WProd and WComp are **object-based**. 
 The files [`keys/key_ev.csv`](keys/key_ev.csv) and [`keys/key_ob.csv`](keys/key_ob.csv) contain information for the event- and object-based experimental materials, respectively, including image paths and their associated target sentences/word lists.
 
-The file [`expt1-2/ProdLoc_materials.csv`](expt1-2/ProdLoc_materials.csv) contains the list of materials expected by the MATLAB experimental script (see [Experimental script](#experimental-script) for more details). If you wish to alter the materials in order to re-run the experiment, then you can regenerate this file by running 
+The file [`expt1-3/ProdLoc_materials.csv`](expt1-3/ProdLoc_materials.csv) contains the list of materials expected by the MATLAB experimental script (see [Experimental script](#experimental-script) for more details). If you wish to alter the materials in order to re-run the experiment, then you can regenerate this file by running 
 `python generate_material_list.py`. Most users will not need to do this.
 
 ### Selecting stimuli
@@ -128,9 +128,9 @@ Note that each participant sees each event picture twice (once in the SProd cond
 ## Instructions and sample items
 
 ### Before experiment
-Please refer to [`expt1-2/instructions/instructions.docx`](expt1-2/instructions/instructions.docx) for the instructions shown to participants prior to the experiment (outside the scanner).
+Please refer to [`expt1-3/instructions/instructions.docx`](expt1-3/instructions/instructions.docx) for the instructions shown to participants prior to the experiment (outside the scanner).
 
-Participants were also shown sample items prior to the experiment. The sample items for the spoken (Experiments 1 & 2a) and typed (Experiment 2b) experiments are found at [`expt1-2/instructions/SampleItemsSpoken.pdf`](expt1-2/instructions/SampleItemsSpoken.pdf) and [`expt1-2/instructions/SampleItemsTyped.pdf`](expt1-2/instructions/SampleItemsTyped.pdf), respectively. The items themselves are identical, with modified instructions.
+Participants were also shown sample items prior to the experiment. The sample items for the spoken (Experiment 1) and typed (Experiment 3) experiments are found at [`expt1-3/instructions/SampleItemsSpoken.pdf`](expt1-3/instructions/SampleItemsSpoken.pdf) and [`expt1-3/instructions/SampleItemsTyped.pdf`](expt1-3/instructions/SampleItemsTyped.pdf), respectively. The items themselves are identical, with modified instructions.
 
 ### During experiment
 There is an instructions screen before each block (2s). These instructions also appear in small font in the lower right corner of the screen throughout the block.
@@ -146,7 +146,7 @@ There is an instructions screen before each block (2s). These instructions also 
 
 ## Experimental script
 
-The spoken (Experiment 1 & 2a) and typed (Experiment 2b) experiments are launched using MATLAB with the scripts [`expt1-2/ProdLoc.m`](expt1-2/ProdLoc.m) and [`expt1-2/ProdLoc_typing.m`](expt1-2/ProdLoc_typing.m), respectively. Both scripts take the following arguments:
+The spoken (Experiment 1) and typed (Experiment 3) experiments are launched using MATLAB with the scripts [`expt1-3/ProdLoc.m`](expt1-3/ProdLoc.m) and [`expt1-3/ProdLoc_typing.m`](expt1-3/ProdLoc_typing.m), respectively. Both scripts take the following arguments:
 
 | Argument | Description | Value |
 | -------- | ----------- | ----- |
@@ -159,15 +159,15 @@ Passing the flag `-s debug` makes the experiment run faster, and skips asking ab
 
 Please note that VisEvSem is referred to as **EVSEM** and NProd is referred to as **ARTIC** in the experimental scripts.
 
-## Experiment 3
+## Experiment 2
 
-The materials and experimental script for Experiment 3 can be found at [`expt3`](expt3). The image files can be downloaded at [this Dropbox link](https://www.dropbox.com/sh/8zwtjj23fc5f03j/AAB9sX6eTn5GNUvFU8O4Vnsba?dl=0) (after downloading, rename/place the folder at `expt3/image_files`). Please note that the script `prodexp.py` requires [Vision Egg](http://visionegg.org/), which is no longer maintained.
+The materials and experimental script for Experiment 2 can be found at [`expt2`](expt2). The image files can be downloaded at [this Dropbox link](https://www.dropbox.com/sh/8zwtjj23fc5f03j/AAB9sX6eTn5GNUvFU8O4Vnsba?dl=0) (after downloading, rename/place the folder at `expt2/image_files`). Please note that the script `prodexp.py` requires [Vision Egg](http://visionegg.org/), which is no longer maintained.
 
 # Data analysis
 
 All estimated BOLD % signal change values for all three fMRI experiments are compiled at [`data/fMRI_all_indiv_production_data.csv`](data/fMRI_all_indiv_production_data.csv). Details on how these values were obtained are in the Methods of the paper. This dataset is used for generating figures and statistical analyses.
 
-Typing output for Experiment 2 is available at [`data/all_prodloc_typing_output_20200804.csv`](data/all_prodloc_typing_output_20200804.csv), and annotated typing output for the sentence production condition is available at [`data/all_SPROD_annotated_data_20201210.csv`](data/all_SPROD_annotated_data_20201210.csv).
+Typing output for Experiment 3 is available at [`data/all_prodloc_typing_output_20200804.csv`](data/all_prodloc_typing_output_20200804.csv), and annotated typing output for the sentence production condition is available at [`data/all_SPROD_annotated_data_20201210.csv`](data/all_SPROD_annotated_data_20201210.csv).
 
 The [`analysis`](analysis) directory contains all code, results, and instructions on running the linear mixed effect models as decribed in the paper.
 
