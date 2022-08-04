@@ -1,6 +1,7 @@
 # Junk files
 *.DS_Store
 *.Rhistory
+*.aux
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
