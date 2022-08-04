@@ -1,12 +1,20 @@
-\documentclass[tikz,border=5pt]{standalone}
-\usetikzlibrary{shapes.misc}
-\usetikzlibrary{positioning}
+% \documentclass[tikz,border=5pt]{standalone}
+\documentclass[tikz,border=5pt,convert={density=600,outext=.tiff}]{standalone}
+\usetikzlibrary{shapes.misc,positioning,backgrounds}
 \usepackage{fontspec}
 
 \begin{document}
-\begin{tikzpicture}[
-    box/.style={rectangle, draw=black, line width=1pt, minimum height=2.7cm, minimum width=3.9cm, rounded corners},
-]
+\tikzset{
+    white background/.style={
+        show background rectangle, %tight background,
+        background rectangle/.style={fill=white}
+    },
+    box/.style={
+        rectangle, fill=white, draw=black, line width=1pt, 
+        minimum height=2.7cm, minimum width=3.9cm, rounded corners
+    }
+}
+\begin{tikzpicture}[white background]
 \setmainfont{Arial}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

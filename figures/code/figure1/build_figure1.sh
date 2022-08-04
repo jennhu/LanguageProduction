@@ -1,0 +1,1 @@
+xelatex -shell-escape figure1.tex
